@@ -1,0 +1,12 @@
+//SCHEMA.PRISMA: El Esquema de Prisma define sus modelos de datos y conexión a la base de datos
+
+//npx prisma db seed: Ejecuta el script de semillas para poblar la base de datos con datos iniciales
+
+//npx prisma generate: Genera el cliente de Prisma basado en el esquema definido, permitiendo interactuar con la base de datos a través de código.
+
+//npx prisma migrate dev: Aplica las migraciones a la base de datos en un entorno de desarrollo, actualizando el esquema según los cambios definidos.
+
+//npx prisma push: Aplica las migraciones a la base de datos sin generar un historial de migraciones, útil para entornos de producción o cuando no se necesita mantener un registro de cambios.
+
+//npx prisma studio: Inicia Prisma Studio, una interfaz gráfica para explorar y administrar los datos en la base de datos.
+

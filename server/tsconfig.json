@@ -1,0 +1,16 @@
+//Este modulo lo que hace es configurar el compilador de typescript, le decimos que queremos que el codigo se compile a ES2020, que use el sistema de modulos CommonJS, que tome los archivos de la carpeta src y los compile en la carpeta dist, que permita la interoperabilidad entre modulos ES y CommonJS, y que active las opciones estrictas de typescript.
+
+//mas sencillamente, le estamos diciendo a typescript como queremos que compile nuestro codigo.
+
+// la diferencia con javascript es que typescript es un superconjunto de javascript, es decir, que cualquier codigo javascript es un codigo typescript valido, pero typescript tiene muchas mas funcionalidades que javascript, como el tipado estatico, las interfaces, las clases, etc. por lo que necesitamos configurar el compilador para que sepa como queremos que compile nuestro codigo.
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "types": ["node"],
+    "module": "CommonJS",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "strict": true
+  }
+}
