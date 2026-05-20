@@ -11,42 +11,60 @@ import {
   changeLiquidationStatus,
 } from "../controllers/liquidation.controller";
 
+import {authMiddleware} from '../middlewares/auth.middleware'
+import { requireRoles } from "../middlewares/requireRoles";
+import {requireAdmin} from "../middlewares/requireAdmin";
 const router = Router();
 
 //////////////////////////////////////////////////////
 // CREATE
 //////////////////////////////////////////////////////
 
-router.post("/", createLiquidation);
+router.post(
+  "/",
+  authMiddleware,
+  requireRoles(["ADMIN", "GENERADOR"]),
+  createLiquidation
+);
 
-//////////////////////////////////////////////////////
-// GET ALL
-//////////////////////////////////////////////////////
+// GET ALL → TODOS
+router.get(
+  "/",
+  authMiddleware,
+  requireRoles(["ADMIN", "COBRADOR", "GENERADOR"]),
+  getAllLiquidations
+);
 
-router.get("/", getAllLiquidations);
+// PATCH STATUS → TODOS
+router.patch(
+  "/:id/status",
+  authMiddleware,
+  requireRoles(["ADMIN", "COBRADOR", "GENERADOR"]),
+  changeLiquidationStatus
+);
 
-//////////////////////////////////////////////////////
-// PATCH STATUS (IMPORTANTE: ARRIBA)
-//////////////////////////////////////////////////////
+// GET BY ID → TODOS
+router.get(
+  "/:id",
+  authMiddleware,
+  requireRoles(["ADMIN", "COBRADOR", "GENERADOR"]),
+  getLiquidationById
+);
 
-router.patch("/:id/status", changeLiquidationStatus);
+// UPDATE COMPLETO → SOLO ADMIN
+router.put(
+  "/:id",
+  authMiddleware,
+  requireAdmin,
+  updateLiquidation
+);
 
-//////////////////////////////////////////////////////
-// GET BY ID
-//////////////////////////////////////////////////////
-
-router.get("/:id", getLiquidationById);
-
-//////////////////////////////////////////////////////
-// UPDATE
-//////////////////////////////////////////////////////
-
-router.put("/:id", updateLiquidation);
-
-//////////////////////////////////////////////////////
-// DELETE
-//////////////////////////////////////////////////////
-
-router.delete("/:id", deleteLiquidation);
+// DELETE → SOLO ADMIN
+router.delete(
+  "/:id",
+  authMiddleware,
+  requireAdmin,
+  deleteLiquidation
+);
 
 export default router;

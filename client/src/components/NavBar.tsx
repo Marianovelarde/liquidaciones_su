@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../api/slice/authSlice";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -25,24 +25,14 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 
-interface User {
-  usuario: string;
-  role?: string;
-}
-
-// mock temporal (luego irá desde auth real)
-const mockUser: User = {
-  usuario: "admin",
-  role: "ADMIN",
-};
-
 export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const user = mockUser;
+  // 🔥 USUARIO REAL DESDE REDUX
+  const user = useSelector((state: any) => state.auth.user);
 
-  // SOLO UN MENÚ (izquierda)
+  // MENÚ
   const [anchorNav, setAnchorNav] =
     React.useState<null | HTMLElement>(null);
 
@@ -61,10 +51,7 @@ export default function Navbar() {
   const handleLogout = () => {
     handleCloseNav();
 
-    // logout real
     dispatch(logout());
-
-    // redirección al login
     navigate("/login");
   };
 
@@ -72,6 +59,17 @@ export default function Navbar() {
     navigate(path);
     handleCloseNav();
   };
+
+  // =========================
+  // 🔐 PERMISOS
+  // =========================
+
+  const canCreate =
+    user?.role === "ADMIN" ||
+    user?.role === "GENERADOR";
+
+  const canAccessAdmin =
+    user?.role === "ADMIN";
 
   return (
     <>
@@ -83,7 +81,6 @@ export default function Navbar() {
         }}
       >
         <Toolbar>
-          {/* MENÚ HAMBURGUESA */}
           <IconButton
             color="inherit"
             onClick={handleOpenNav}
@@ -92,7 +89,6 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
 
-          {/* TÍTULO */}
           <Typography
             variant="h6"
             sx={{
@@ -104,10 +100,6 @@ export default function Navbar() {
           </Typography>
         </Toolbar>
       </AppBar>
-
-      {/* ========================= */}
-      {/* ÚNICO MENÚ */}
-      {/* ========================= */}
 
       <Menu
         anchorEl={anchorNav}
@@ -131,29 +123,27 @@ export default function Navbar() {
           },
         }}
       >
-        {/* INFO USUARIO */}
+        {/* USUARIO */}
         <MenuItem disabled>
           <Avatar sx={{ mr: 1 }}>
-            {user.usuario.charAt(0).toUpperCase()}
+            {user?.username?.charAt(0)?.toUpperCase() || "U"}
           </Avatar>
 
           <Box>
-            <Typography
-              variant="body2"
-              fontWeight={600}
-            >
-              {user.usuario}
+            <Typography variant="body2" fontWeight={600}>
+              {user?.username || "Usuario"}
             </Typography>
 
             <Typography
               variant="caption"
               color="text.secondary"
             >
-              {user.role}
+              {user?.role || "-"}
             </Typography>
           </Box>
         </MenuItem>
 
+        {/* HOME */}
         <MenuItem onClick={() => goTo("/")}>
           <ListItemIcon>
             <HomeIcon fontSize="small" />
@@ -161,13 +151,17 @@ export default function Navbar() {
           Inicio
         </MenuItem>
 
-        <MenuItem onClick={() => goTo("/crear")}>
-          <ListItemIcon>
-            <AddCircleIcon fontSize="small" />
-          </ListItemIcon>
-          Nueva Liquidación
-        </MenuItem>
+        {/* 🔥 CREAR (RESTRINGIDO) */}
+        {canCreate && (
+          <MenuItem onClick={() => goTo("/crear")}>
+            <ListItemIcon>
+              <AddCircleIcon fontSize="small" />
+            </ListItemIcon>
+            Nueva Liquidación
+          </MenuItem>
+        )}
 
+        {/* LISTAR */}
         <MenuItem onClick={() => goTo("/listar")}>
           <ListItemIcon>
             <DescriptionIcon fontSize="small" />
@@ -175,6 +169,7 @@ export default function Navbar() {
           Ver Liquidaciones
         </MenuItem>
 
+        {/* FILTROS */}
         <MenuItem onClick={() => goTo("/filtros")}>
           <ListItemIcon>
             <SearchIcon fontSize="small" />
@@ -182,7 +177,8 @@ export default function Navbar() {
           Buscar / Filtros
         </MenuItem>
 
-        {user.role === "ADMIN" && (
+        {/* 🔥 ADMIN */}
+        {canAccessAdmin && (
           <MenuItem onClick={() => goTo("/admin")}>
             <ListItemIcon>
               <AdminPanelSettingsIcon fontSize="small" />
@@ -191,6 +187,7 @@ export default function Navbar() {
           </MenuItem>
         )}
 
+        {/* LOGOUT */}
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />

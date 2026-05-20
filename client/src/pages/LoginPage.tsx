@@ -5,24 +5,42 @@ import {
   Typography,
   Paper,
   Divider,
-  Avatar,
 } from "@mui/material";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { loginRequest } from "../api/auth.api";
 import { setCredentials } from "../api/slice/authSlice";
+
+// ✅ IMPORTAR IMAGEN
+import muniLogo from "../assets/munilogo.png";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { token } = useSelector((state: any) => state.auth);
+
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
+
+  //////////////////////////////////////////////////////
+  // REDIRECT SI YA ESTÁ LOGUEADO
+  //////////////////////////////////////////////////////
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token]);
+
+  //////////////////////////////////////////////////////
+  // HANDLE CHANGE
+  //////////////////////////////////////////////////////
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -33,6 +51,10 @@ export default function LoginPage() {
     });
   };
 
+  //////////////////////////////////////////////////////
+  // LOGIN
+  //////////////////////////////////////////////////////
+
   const handleSubmit = async (
     e: React.FormEvent
   ) => {
@@ -41,19 +63,41 @@ export default function LoginPage() {
     try {
       const res = await loginRequest(form);
 
-      // IMPORTANTE:
-      // actualizar Redux + localStorage
-      dispatch(
-        setCredentials({
-          user: res.data.user,
-          token: res.data.token,
-        })
+      console.log(
+        "LOGIN RESPONSE:",
+        res.data
       );
+
+      if (
+        !res.data?.token ||
+        !res.data?.user
+      ) {
+        throw new Error(
+          "Respuesta inválida del servidor"
+        );
+      }
+
+     const expiresAt =
+  Date.now() + 10 * 60 * 1000;
+
+dispatch(
+  setCredentials({
+    user: res.data.user,
+    token: res.data.token,
+    expiresAt,
+  })
+);
 
       navigate("/");
     } catch (error: any) {
+      console.log(
+        "LOGIN ERROR:",
+        error
+      );
+
       alert(
         error?.response?.data?.error ||
+          error?.message ||
           "Error al iniciar sesión"
       );
     }
@@ -78,18 +122,32 @@ export default function LoginPage() {
         }}
       >
         <form onSubmit={handleSubmit}>
-          <Box sx={{ textAlign: "center", mb: 3 }}>
-            <Avatar
+          <Box
+            sx={{
+              textAlign: "center",
+              mb: 3,
+            }}
+          >
+            {/* LOGO */}
+            <Box
+              component="img"
+              src={muniLogo}
+              alt="Municipalidad"
               sx={{
-                width: 70,
-                height: 70,
+                width: 90,
+                height: 90,
+                objectFit: "contain",
+                display: "block",
                 margin: "0 auto",
+                mb: 2,
+                borderRadius: "50%",
               }}
-            >
-              M
-            </Avatar>
+            />
 
-            <Typography variant="h5" mt={2}>
+            <Typography
+              variant="h5"
+              mt={2}
+            >
               Sistema de Liquidaciones
             </Typography>
 
@@ -99,7 +157,9 @@ export default function LoginPage() {
           </Box>
 
           <Divider sx={{ mb: 3 }} />
-
+<Typography sx={{marginBottom: "10px"}}>
+  Acceso al sistema
+</Typography>
           <TextField
             label="Usuario"
             name="username"

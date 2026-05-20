@@ -1,35 +1,31 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:3001/api/liquidaciones";
+import api from "./axios";
 
 export const createLiquidation = (data: any) => {
-  return axios.post(API_URL, data);
+  return api.post("/liquidaciones", data);
 };
 
-
-
-
-  export const getLiquidations = () => {
-  return axios.get(API_URL);
-}
+export const getLiquidations = () => {
+  return api.get("/liquidaciones");
+};
 
 export const getLiquidationById = (id: number) => {
-  return axios.get(`${API_URL}/${id}`);
+  return api.get(`/liquidaciones/${id}`);
 };
 
-export const updateLiquidation = (
-  id: number,
-  data: any
-) => {
-  return axios.put(`${API_URL}/${id}`, data);
+export const updateLiquidation = (id: number, data: any) => {
+  return api.put(`/liquidaciones/${id}`, data);
 };
 
 export const changeLiquidationStatus = (
   id: number,
   status: string
 ) => {
-  return axios.patch(
-    `${API_URL}/${id}/status`,
-    { status }
-  );
+  return api.patch(`/liquidaciones/${id}/status`, {
+    status,
+  });
+};
+export const deleteLiquidation = (
+  id: number
+) => {
+  return api.delete(`/liquidaciones/${id}`);
 };

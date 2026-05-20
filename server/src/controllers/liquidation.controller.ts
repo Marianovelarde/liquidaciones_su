@@ -1,5 +1,3 @@
-// src/controllers/liquidation.controller.ts
-
 import { Request, Response } from "express";
 
 import {
@@ -8,19 +6,34 @@ import {
   getLiquidationByIdService,
   updateLiquidationService,
   deleteLiquidationService,
-  changeLiquidationStatusService
+  changeLiquidationStatusService,
 } from "../services/liquidation.service";
 
 import { LiquidationStatus } from "@prisma/client";
+
+//////////////////////////////////////////////////////
 // CREATE
+//////////////////////////////////////////////////////
+
 export const createLiquidation = async (
   req: Request,
   res: Response
 ) => {
   try {
-    const liquidation = await createLiquidationService(req.body);
+    const liquidation =
+      await createLiquidationService(
+        req.body,
+
+        {
+          id: (req as any).user.id,
+          role: (req as any).user.role,
+        },
+
+        req.ip
+      );
 
     res.status(201).json(liquidation);
+
   } catch (error: any) {
     res.status(400).json({
       error: error.message,
@@ -28,25 +41,31 @@ export const createLiquidation = async (
   }
 };
 
-
+//////////////////////////////////////////////////////
 // GET ALL
+//////////////////////////////////////////////////////
+
 export const getAllLiquidations = async (
-  _req: Request,
+  req: Request,
   res: Response
 ) => {
   try {
-    const liquidations = await getAllLiquidationsService();
+    const liquidations =
+      await getAllLiquidationsService();
 
     res.json(liquidations);
+
   } catch (error: any) {
-    res.status(500).json({
-      error: "Error al obtener las liquidaciones",
+    res.status(400).json({
+      error: error.message,
     });
   }
 };
 
-
+//////////////////////////////////////////////////////
 // GET BY ID
+//////////////////////////////////////////////////////
+
 export const getLiquidationById = async (
   req: Request,
   res: Response
@@ -54,9 +73,11 @@ export const getLiquidationById = async (
   try {
     const id = Number(req.params.id);
 
-    const liquidation = await getLiquidationByIdService(id);
+    const liquidation =
+      await getLiquidationByIdService(id);
 
     res.json(liquidation);
+
   } catch (error: any) {
     res.status(404).json({
       error: error.message,
@@ -64,8 +85,10 @@ export const getLiquidationById = async (
   }
 };
 
-
+//////////////////////////////////////////////////////
 // UPDATE
+//////////////////////////////////////////////////////
+
 export const updateLiquidation = async (
   req: Request,
   res: Response
@@ -73,12 +96,21 @@ export const updateLiquidation = async (
   try {
     const id = Number(req.params.id);
 
-    const liquidation = await updateLiquidationService(
-      id,
-      req.body
-    );
+    const liquidation =
+      await updateLiquidationService(
+        id,
+        req.body,
+
+        {
+          id: (req as any).user.id,
+          role: (req as any).user.role,
+        },
+
+        req.ip
+      );
 
     res.json(liquidation);
+
   } catch (error: any) {
     res.status(400).json({
       error: error.message,
@@ -86,8 +118,10 @@ export const updateLiquidation = async (
   }
 };
 
-
+//////////////////////////////////////////////////////
 // DELETE
+//////////////////////////////////////////////////////
+
 export const deleteLiquidation = async (
   req: Request,
   res: Response
@@ -95,46 +129,60 @@ export const deleteLiquidation = async (
   try {
     const id = Number(req.params.id);
 
-    await deleteLiquidationService(id);
-
-    res.json({
-      message: "Liquidación eliminada correctamente",
-    });
-  } catch (error: any) {
-    res.status(400).json({
-      error: error.message,
-    });
-  }
-};
-
-// CHANGE STATUS
-
-export const changeLiquidationStatus = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const id = Number(req.params.id);
-    const { status } = req.body;
-
-    if (
-      !Object.values(LiquidationStatus).includes(status)
-    ) {
-      return res.status(400).json({
-        error: "Estado inválido",
-      });
-    }
-
-    const changeLiquidation =
-      await changeLiquidationStatusService(
+    const result =
+      await deleteLiquidationService(
         id,
-        status as LiquidationStatus
+
+        {
+          id: (req as any).user.id,
+          role: (req as any).user.role,
+        },
+
+        req.ip
       );
 
-    res.json(changeLiquidation);
+    res.json(result);
+
   } catch (error: any) {
     res.status(400).json({
       error: error.message,
     });
   }
 };
+
+//////////////////////////////////////////////////////
+// CHANGE STATUS
+//////////////////////////////////////////////////////
+
+export const changeLiquidationStatus =
+  async (
+    req: Request,
+    res: Response
+  ) => {
+    try {
+      const id = Number(req.params.id);
+
+      const { status } = req.body;
+
+      const changeLiquidation =
+        await changeLiquidationStatusService(
+          id,
+
+          status as LiquidationStatus,
+
+          {
+            id: (req as any).user.id,
+            role: (req as any).user.role,
+          },
+
+          req.ip
+        );
+
+      res.json(changeLiquidation);
+
+    } catch (error: any) {
+      res.status(400).json({
+        error: error.message,
+      });
+    }
+  };

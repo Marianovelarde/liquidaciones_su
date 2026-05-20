@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 
 import CategoryAdmin from "../pages/admin/CategoryAdmin";
 import UserAdmin from "../pages/admin/UserAdmin";
+import LiquidationAdmin from "../pages/LiquidationAdmin";
+import AuditAdmin from "../pages/AuditAdmin";
 
 // futuros módulos
 // import LiquidationAdmin from "./LiquidationAdmin";
@@ -115,32 +117,24 @@ const AdminPanel = () => {
         </Button>
 
         {/* AUDITORÍA */}
-        <Button
-          fullWidth
-          startIcon={<HistoryIcon />}
-          variant={
-            section === "audit"
-              ? "contained"
-              : "text"
-          }
-          onClick={() => setSection("audit")}
-          sx={{
-            justifyContent: "flex-start",
-          }}
-        >
-          Auditoría
-        </Button>
+     <Button
+  fullWidth
+  startIcon={<HistoryIcon />}
+  onClick={() =>
+    navigate("/admin/auditoria")
+  }
+  sx={{
+    justifyContent: "flex-start",
+  }}
+>
+  Auditoría
+</Button>
 
         {/* MÉTRICAS */}
         <Button
           fullWidth
           startIcon={<AnalyticsIcon />}
-          variant={
-            section === "metrics"
-              ? "contained"
-              : "text"
-          }
-          onClick={() => setSection("metrics")}
+          onClick={() => navigate("/admin/metricas")}
           sx={{
             justifyContent: "flex-start",
           }}
@@ -169,10 +163,7 @@ const AdminPanel = () => {
         {/* FUTURE MODULES */}
 
         {section === "liquidations" && (
-          <Typography variant="h6">
-            Gestión de Liquidaciones
-            (próximo módulo)
-          </Typography>
+          <LiquidationAdmin />
         )}
 
         {section === "audit" && (

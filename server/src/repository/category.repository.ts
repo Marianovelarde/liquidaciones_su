@@ -10,7 +10,14 @@ export const getAllCategoriesRepo = async () => {
     },
   });
 };
-
+export const getCategoryByNameRepo =
+  async (name: string) => {
+    return await prisma.category.findUnique({
+      where: {
+        name,
+      },
+    });
+  };
 export const createCategoryRepo = async (data: {
   name: string;
   coefficient: number;

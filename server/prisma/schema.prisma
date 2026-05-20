@@ -30,12 +30,12 @@ enum LiquidationStatus {
 //////////////////////////////////////////////////////
 
 model Category {
-  id           Int      @id @default(autoincrement())
-  name         String   @unique
-  coefficient  Float
-  pricePerM2   Float
+  id          Int    @id @default(autoincrement())
+  name        String @unique
+  coefficient Float
+  pricePerM2  Float
 
-  deletedAt    DateTime?
+  deletedAt DateTime?
 
   liquidations Liquidation[]
 }
@@ -50,8 +50,8 @@ model User {
   password String
   role     UserRole @default(GENERADOR)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   //////////////////////////////////////////////////////
@@ -164,6 +164,13 @@ model Liquidation {
   updatedAt DateTime @updatedAt
 }
 
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  STATUS_CHANGE
+}
+
 //////////////////////////////////////////////////////
 // AUDIT LOG
 //////////////////////////////////////////////////////
@@ -178,6 +185,8 @@ model AuditLog {
   userId Int
   user   User @relation(fields: [userId], references: [id])
 
+  userRole UserRole
+
   //////////////////////////////////////////
   // Liquidación afectada
   //////////////////////////////////////////
@@ -189,10 +198,26 @@ model AuditLog {
   // Acción realizada
   //////////////////////////////////////////
 
-  action String
+  action AuditAction
+
+  //////////////////////////////////////////
+  // Campo afectado
+  //////////////////////////////////////////
+
+  field String?
+
+  //////////////////////////////////////////
+  // Valores
+  //////////////////////////////////////////
 
   oldValue String?
   newValue String?
+
+  //////////////////////////////////////////
+  // Información adicional
+  //////////////////////////////////////////
+
+  ipAddress String?
 
   //////////////////////////////////////////
   // Fecha
