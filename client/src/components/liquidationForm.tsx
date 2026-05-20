@@ -401,7 +401,7 @@ export default function LiquidationForm() {
               Expediente
             </Typography>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
               <Grid item xs={4}>
                 <TextField
                   size="small"
@@ -605,6 +605,7 @@ export default function LiquidationForm() {
                   value={form.categoryId}
                   fullWidth
                   onChange={handleChange}
+                  sx={{width: "200px"}}
                 >
                   {categories.map((cat) => (
                     <MenuItem
@@ -627,6 +628,7 @@ export default function LiquidationForm() {
                   fullWidth
                   value={form.hasSurcharge}
                   onChange={handleChange}
+                  sx={{width: "150px"}}
                 >
                   <MenuItem value="false">
                     No
@@ -666,6 +668,7 @@ export default function LiquidationForm() {
                   multiline
                   rows={3}
                   onChange={handleChange}
+                  sx={{width: "700px"}}
                 />
               </Grid>
             </Grid>
