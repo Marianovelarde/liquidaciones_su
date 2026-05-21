@@ -5,12 +5,22 @@
 // la diferencia con javascript es que typescript es un superconjunto de javascript, es decir, que cualquier codigo javascript es un codigo typescript valido, pero typescript tiene muchas mas funcionalidades que javascript, como el tipado estatico, las interfaces, las clases, etc. por lo que necesitamos configurar el compilador para que sepa como queremos que compile nuestro codigo.
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "types": ["node"],
-    "module": "CommonJS",
+    "target": "ES2019",
+    "module": "commonjs",
     "rootDir": "./src",
     "outDir": "./dist",
+
     "esModuleInterop": true,
-    "strict": true
-  }
+    "strict": true,
+    "skipLibCheck": true
+  },
+
+  "include": ["src"],
+
+  "exclude": [
+    "node_modules",
+    "dist",
+    "prisma",
+    "readme.ts"
+  ]
 }

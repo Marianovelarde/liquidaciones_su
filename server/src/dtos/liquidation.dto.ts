@@ -1,6 +1,8 @@
 // src/dtos/liquidation.dto.ts
 
 export interface CreateLiquidationDTO {
+
+  
   // número de liquidación
   emissionNumber: number;
 
@@ -30,6 +32,8 @@ export interface CreateLiquidationDTO {
 
   // categoría
   categoryId: number;
+
+  createdById: number;
 
   // recargo
   hasSurcharge: boolean;

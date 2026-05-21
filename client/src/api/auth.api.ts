@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-const API_URL = "http://localhost:3001/api/login";
+const API_URL = "http://localhost:3002/api/login";
 
 export const loginRequest = (data: {
   username: string;
