@@ -37,9 +37,11 @@ export default function LiquidationDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const user = JSON.parse(
-    localStorage.getItem("user") || "{}"
-  );
+const auth = JSON.parse(
+  localStorage.getItem("auth") || "{}"
+);
+
+const user = auth?.user || {};
 
   const isAdmin = user?.role === "ADMIN";
 

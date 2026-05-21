@@ -128,14 +128,16 @@ export default function LiquidationForm() {
 
   const handleSubmit = async () => {
     try {
-      const user = JSON.parse(
-        localStorage.getItem("user") || "{}"
-      );
+const auth = JSON.parse(
+  localStorage.getItem("auth") || "{}"
+);
 
-      if (!user?.id) {
-        alert("Debes iniciar sesión");
-        return;
-      }
+const user = auth.user;
+
+if (!user?.id) {
+  alert("Debes iniciar sesión");
+  return;
+}
 
       const payload = {
         emissionNumber: Number(
