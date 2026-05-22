@@ -42,6 +42,10 @@ export interface CreateLiquidationDTO {
   // observaciones
   observations?: string;
 
+  //nro de boleta
+
+  receiptNumber?: string;
+  
   // total final
   total: number;
 }

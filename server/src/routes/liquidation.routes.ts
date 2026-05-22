@@ -55,10 +55,13 @@ router.get(
 router.put(
   "/:id",
   authMiddleware,
-  requireAdmin,
+  requireRoles([
+    "ADMIN",
+    "COBRADOR",
+    "GENERADOR",
+  ]),
   updateLiquidation
 );
-
 // DELETE → SOLO ADMIN
 router.delete(
   "/:id",

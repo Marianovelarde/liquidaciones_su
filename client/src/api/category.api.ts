@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-const API_URL = "http://localhost:3001/api/categorias";
+const API_URL = "http://localhost:3002/api/categorias";
 
 //////////////////////////////////////////////////////
 // GET ALL

@@ -19,7 +19,7 @@ import {
   Button,
   MenuItem,
   Divider,
-    Dialog,
+  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -35,13 +35,14 @@ const statusOptions = [
 
 export default function LiquidationDetailPage() {
   const { id } = useParams();
+
   const navigate = useNavigate();
 
-const auth = JSON.parse(
-  localStorage.getItem("auth") || "{}"
-);
+  const auth = JSON.parse(
+    localStorage.getItem("auth") || "{}"
+  );
 
-const user = auth?.user || {};
+  const user = auth?.user || {};
 
   const isAdmin = user?.role === "ADMIN";
 
@@ -50,29 +51,47 @@ const user = auth?.user || {};
     user?.role === "COBRADOR" ||
     user?.role === "GENERADOR";
 
+  //////////////////////////////////////////////////////
+  // NUEVO
+  //////////////////////////////////////////////////////
+
+  const canEditPaymentData =
+    user?.role === "ADMIN" ||
+    user?.role === "COBRADOR" ||
+    user?.role === "GENERADOR";
+
+  //////////////////////////////////////////////////////
+  // STATES
+  //////////////////////////////////////////////////////
+
   const [form, setForm] = useState<any>(null);
-const [openStatusModal, setOpenStatusModal] =
-  useState(false);
 
-const [pendingStatus, setPendingStatus] =
-  useState("");
+  const [openStatusModal, setOpenStatusModal] =
+    useState(false);
+
+  const [pendingStatus, setPendingStatus] =
+    useState("");
+
   const [feedbackModal, setFeedbackModal] =
-  useState(false);
+    useState(false);
 
-const [feedbackMessage, setFeedbackMessage] =
-  useState("");
+  const [feedbackMessage, setFeedbackMessage] =
+    useState("");
 
-const [feedbackType, setFeedbackType] =
-  useState<"success" | "error">(
-    "success"
-  );
+  const [feedbackType, setFeedbackType] =
+    useState<"success" | "error">(
+      "success"
+    );
+
   //////////////////////////////////////////////////////
   // LOAD
   //////////////////////////////////////////////////////
 
   const loadLiquidation = async () => {
     try {
-      const res = await getLiquidationById(Number(id));
+      const res = await getLiquidationById(
+        Number(id)
+      );
 
       setForm(res.data);
     } catch (error) {
@@ -100,20 +119,35 @@ const [feedbackType, setFeedbackType] =
   };
 
   //////////////////////////////////////////////////////
-  // SAVE (SOLO ADMIN)
+  // SAVE
   //////////////////////////////////////////////////////
 
   const handleSave = async () => {
     try {
-      await updateLiquidation(Number(id), form);
+      await updateLiquidation(
+        Number(id),
+        form
+      );
 
-      alert("Liquidación actualizada");
+      setFeedbackType("success");
+
+      setFeedbackMessage(
+        "Liquidación actualizada correctamente."
+      );
+
+      setFeedbackModal(true);
 
       loadLiquidation();
     } catch (error) {
       console.error(error);
 
-      alert("Error actualizando");
+      setFeedbackType("error");
+
+      setFeedbackMessage(
+        "Error actualizando liquidación."
+      );
+
+      setFeedbackModal(true);
     }
   };
 
@@ -122,59 +156,52 @@ const [feedbackType, setFeedbackType] =
   //////////////////////////////////////////////////////
 
   const handleOpenStatusModal = (
-  newStatus: string
-) => {
-  setPendingStatus(newStatus);
+    newStatus: string
+  ) => {
+    setPendingStatus(newStatus);
 
-  setOpenStatusModal(true);
-};
-
-//////////////////////////////////////////////////////
-// CONFIRMAR CAMBIO STATUS
-//////////////////////////////////////////////////////
-
-const handleConfirmStatusChange =
-  async () => {
-    try {
-      await changeLiquidationStatus(
-        Number(id),
-        pendingStatus
-      );
-
-      setForm((prev: any) => ({
-        ...prev,
-        status: pendingStatus,
-      }));
-
-      setOpenStatusModal(false);
-
-      //////////////////////////////////////////////////
-      // FEEDBACK OK
-      //////////////////////////////////////////////////
-
-      setFeedbackType("success");
-
-      setFeedbackMessage(
-        `Estado actualizado correctamente a "${pendingStatus}".`
-      );
-
-      setFeedbackModal(true);
-    } catch (error) {
-      console.error(error);
-
-      //////////////////////////////////////////////////
-      // FEEDBACK ERROR
-      //////////////////////////////////////////////////
-
-      setFeedbackType("error");
-
-      setFeedbackMessage(
-        "Ocurrió un error al cambiar el estado."
-      );
-
-      setFeedbackModal(true);
-    }
+    setOpenStatusModal(true);
   };
+
+  //////////////////////////////////////////////////////
+  // CONFIRMAR CAMBIO STATUS
+  //////////////////////////////////////////////////////
+
+  const handleConfirmStatusChange =
+    async () => {
+      try {
+        await changeLiquidationStatus(
+          Number(id),
+          pendingStatus
+        );
+
+        setForm((prev: any) => ({
+          ...prev,
+          status: pendingStatus,
+        }));
+
+        setOpenStatusModal(false);
+
+        setFeedbackType("success");
+
+        setFeedbackMessage(
+          `Estado actualizado correctamente a "${pendingStatus}".`
+        );
+
+        setFeedbackModal(true);
+      } catch (error) {
+        console.error(error);
+
+        setFeedbackType("error");
+
+        setFeedbackMessage(
+          "Ocurrió un error al cambiar el estado."
+        );
+
+        setFeedbackModal(true);
+      }
+    };
+
   //////////////////////////////////////////////////////
   // LOADING
   //////////////////////////////////////////////////////
@@ -202,8 +229,8 @@ const handleConfirmStatusChange =
           color="warning.main"
           sx={{ mb: 2 }}
         >
-          Solo puede modificar el estado de la
-          liquidación.
+          Solo puede modificar el estado
+          de la liquidación.
         </Typography>
       )}
 
@@ -215,9 +242,7 @@ const handleConfirmStatusChange =
       >
         <CardContent>
           <Grid container spacing={2}>
-            {/* ========================= */}
             {/* IDENTIFICACIÓN */}
-            {/* ========================= */}
 
             <Grid size={{ xs: 12 }}>
               <Typography variant="h6">
@@ -231,7 +256,9 @@ const handleConfirmStatusChange =
               <TextField
                 label="Liquidación N°"
                 fullWidth
-                value={form.emissionNumber || ""}
+                value={
+                  form.emissionNumber || ""
+                }
                 disabled={!isAdmin}
                 name="emissionNumber"
                 onChange={handleChange}
@@ -260,9 +287,7 @@ const handleConfirmStatusChange =
               />
             </Grid>
 
-            {/* ========================= */}
             {/* EXPEDIENTE */}
-            {/* ========================= */}
 
             <Grid size={{ xs: 12 }}>
               <Typography
@@ -314,9 +339,7 @@ const handleConfirmStatusChange =
               />
             </Grid>
 
-            {/* ========================= */}
             {/* CARPETA */}
-            {/* ========================= */}
 
             <Grid size={{ xs: 12 }}>
               <Typography
@@ -333,7 +356,9 @@ const handleConfirmStatusChange =
               <TextField
                 label="Carpeta Nº"
                 fullWidth
-                value={form.carpetaNumero || ""}
+                value={
+                  form.carpetaNumero || ""
+                }
                 disabled={!isAdmin}
                 name="carpetaNumero"
                 onChange={handleChange}
@@ -344,7 +369,9 @@ const handleConfirmStatusChange =
               <TextField
                 label="Letra"
                 fullWidth
-                value={form.carpetaLetra || ""}
+                value={
+                  form.carpetaLetra || ""
+                }
                 disabled={!isAdmin}
                 name="carpetaLetra"
                 onChange={handleChange}
@@ -355,16 +382,16 @@ const handleConfirmStatusChange =
               <TextField
                 label="Año Carpeta"
                 fullWidth
-                value={form.carpetaAnio || ""}
+                value={
+                  form.carpetaAnio || ""
+                }
                 disabled={!isAdmin}
                 name="carpetaAnio"
                 onChange={handleChange}
               />
             </Grid>
 
-            {/* ========================= */}
             {/* PADRÓN */}
-            {/* ========================= */}
 
             <Grid size={{ xs: 12 }}>
               <Typography
@@ -421,9 +448,7 @@ const handleConfirmStatusChange =
               />
             </Grid>
 
-            {/* ========================= */}
             {/* OBRA */}
-            {/* ========================= */}
 
             <Grid size={{ xs: 12 }}>
               <Typography
@@ -490,21 +515,45 @@ const handleConfirmStatusChange =
                 value={form.status || ""}
                 disabled={!canChangeStatus}
                 onChange={(e) =>
-  handleOpenStatusModal(
-    e.target.value
-  )
-}
+                  handleOpenStatusModal(
+                    e.target.value
+                  )
+                }
               >
-                {statusOptions.map((status) => (
-                  <MenuItem
-                    key={status}
-                    value={status}
-                  >
-                    {status}
-                  </MenuItem>
-                ))}
+                {statusOptions.map(
+                  (status) => (
+                    <MenuItem
+                      key={status}
+                      value={status}
+                    >
+                      {status}
+                    </MenuItem>
+                  )
+                )}
               </TextField>
             </Grid>
+
+            {/* NUEVO CAMPO */}
+
+            {form.status === "PAGADO" && (
+              <Grid
+                size={{ xs: 12, md: 6 }}
+              >
+                <TextField
+                  label="N° de Boleta"
+                  fullWidth
+                  value={
+                    form.receiptNumber || ""
+                  }
+                  disabled={
+  !isAdmin &&
+  !!form.receiptNumber
+}
+                  name="receiptNumber"
+                  onChange={handleChange}
+                />
+              </Grid>
+            )}
 
             {/* OBSERVACIONES */}
 
@@ -514,8 +563,10 @@ const handleConfirmStatusChange =
                 fullWidth
                 multiline
                 rows={4}
-                value={form.observations || ""}
-                disabled={!isAdmin}
+                value={
+                  form.observations || ""
+                }
+               disabled={!isAdmin}
                 name="observations"
                 onChange={handleChange}
               />
@@ -531,7 +582,8 @@ const handleConfirmStatusChange =
                   mt: 3,
                 }}
               >
-                {isAdmin && (
+                {(isAdmin ||
+                  canEditPaymentData) && (
                   <Button
                     variant="contained"
                     onClick={handleSave}
@@ -539,43 +591,12 @@ const handleConfirmStatusChange =
                     Guardar cambios
                   </Button>
                 )}
-<Dialog
-  open={feedbackModal}
-  onClose={() =>
-    setFeedbackModal(false)
-  }
->
-  <DialogTitle>
-    {feedbackType === "success"
-      ? "Operación exitosa"
-      : "Error"}
-  </DialogTitle>
 
-  <DialogContent>
-    <Typography>
-      {feedbackMessage}
-    </Typography>
-  </DialogContent>
-
-  <DialogActions>
-    <Button
-      variant="contained"
-      color={
-        feedbackType === "success"
-          ? "primary"
-          : "error"
-      }
-      onClick={() =>
-        setFeedbackModal(false)
-      }
-    >
-      Aceptar
-    </Button>
-  </DialogActions>
-</Dialog>
                 <Button
                   variant="outlined"
-                  onClick={() => navigate(-1)}
+                  onClick={() =>
+                    navigate(-1)
+                  }
                 >
                   Volver
                 </Button>
@@ -584,63 +605,107 @@ const handleConfirmStatusChange =
           </Grid>
         </CardContent>
       </Card>
+
+      {/* MODAL FEEDBACK */}
+
       <Dialog
-  open={openStatusModal}
-  onClose={() =>
-    setOpenStatusModal(false)
-  }
->
-  <DialogTitle>
-    Confirmar cambio de estado
-  </DialogTitle>
+        open={feedbackModal}
+        onClose={() =>
+          setFeedbackModal(false)
+        }
+      >
+        <DialogTitle>
+          {feedbackType === "success"
+            ? "Operación exitosa"
+            : "Error"}
+        </DialogTitle>
 
-  <DialogContent>
-    <Typography sx={{ mb: 2 }}>
-      ¿Está seguro de cambiar el estado
-      de la liquidación?
-    </Typography>
+        <DialogContent>
+          <Typography>
+            {feedbackMessage}
+          </Typography>
+        </DialogContent>
 
-    <Typography>
-      Estado actual:
-      <strong> {form.status}</strong>
-    </Typography>
+        <DialogActions>
+          <Button
+            variant="contained"
+            color={
+              feedbackType === "success"
+                ? "primary"
+                : "error"
+            }
+            onClick={() =>
+              setFeedbackModal(false)
+            }
+          >
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-    <Typography>
-      Nuevo estado:
-      <strong> {pendingStatus}</strong>
-    </Typography>
+      {/* MODAL STATUS */}
 
-    <Typography sx={{ mt: 2 }}>
-      Usuario:
-      <strong>
-        {" "}
-        {user.username}
-      </strong>
-    </Typography>
+      <Dialog
+        open={openStatusModal}
+        onClose={() =>
+          setOpenStatusModal(false)
+        }
+      >
+        <DialogTitle>
+          Confirmar cambio de estado
+        </DialogTitle>
 
+        <DialogContent>
+          <Typography sx={{ mb: 2 }}>
+            ¿Está seguro de cambiar el
+            estado de la liquidación?
+          </Typography>
 
-  </DialogContent>
+          <Typography>
+            Estado actual:
+            <strong>
+              {" "}
+              {form.status}
+            </strong>
+          </Typography>
 
-  <DialogActions>
-    <Button
-      onClick={() =>
-        setOpenStatusModal(false)
-      }
-    >
-      Cancelar
-    </Button>
+          <Typography>
+            Nuevo estado:
+            <strong>
+              {" "}
+              {pendingStatus}
+            </strong>
+          </Typography>
 
-    <Button
-      variant="contained"
-      color="warning"
-      onClick={
-        handleConfirmStatusChange
-      }
-    >
-      Confirmar cambio
-    </Button>
-  </DialogActions>
-</Dialog>
+          <Typography sx={{ mt: 2 }}>
+            Usuario:
+            <strong>
+              {" "}
+              {user.username}
+            </strong>
+          </Typography>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            onClick={() =>
+              setOpenStatusModal(false)
+            }
+          >
+            Cancelar
+          </Button>
+
+          <Button
+            variant="contained"
+            color="warning"
+            onClick={
+              handleConfirmStatusChange
+            }
+          >
+            Confirmar cambio
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

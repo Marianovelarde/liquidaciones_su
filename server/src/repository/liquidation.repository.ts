@@ -61,6 +61,7 @@ export const updateLiquidationRepo = async (
       superficie: Number(data.superficie),
       total: Number(data.total),
       status: data.status,
+      receiptNumber: data.receiptNumber
     },
     include: {
       category: true,

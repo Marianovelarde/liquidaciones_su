@@ -138,6 +138,8 @@ model Liquidation {
 
   observations String?
 
+  receiptNumber String?
+
   //////////////////////////////////////////
   // Total
   //////////////////////////////////////////
@@ -183,7 +185,8 @@ model AuditLog {
   //////////////////////////////////////////
 
   userId Int
-  user   User @relation(fields: [userId], references: [id])
+
+  user User @relation(fields: [userId], references: [id])
 
   userRole UserRole
 
@@ -191,8 +194,9 @@ model AuditLog {
   // Liquidación afectada
   //////////////////////////////////////////
 
-  liquidationId Int
-  liquidation   Liquidation @relation(fields: [liquidationId], references: [id])
+  liquidationId Int?
+
+  liquidation Liquidation? @relation(fields: [liquidationId], references: [id], onDelete: SetNull)
 
   //////////////////////////////////////////
   // Acción realizada
@@ -211,6 +215,7 @@ model AuditLog {
   //////////////////////////////////////////
 
   oldValue String?
+
   newValue String?
 
   //////////////////////////////////////////

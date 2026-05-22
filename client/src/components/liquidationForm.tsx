@@ -232,9 +232,17 @@ if (!user?.id) {
   // IMPRIMIR
   //////////////////////////////////////////////////////
 
-  const handlePrint = () => {
+ const handlePrint = async () => {
+  try {
+    await new Promise((resolve) =>
+      setTimeout(resolve, 300)
+    );
+
     window.print();
-  };
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   //////////////////////////////////////////////////////
   // CONTINUAR
@@ -796,22 +804,24 @@ if (!user?.id) {
 
       {/* MODAL */}
 
-      <Dialog
-        open={openModal}
-        maxWidth="md"
-        fullWidth
-        sx={{
-          "@media print": {
-            "& .MuiDialog-paper": {
-              boxShadow: "none",
-              overflow: "visible",
-              maxWidth: "100%",
-              width: "100%",
-              margin: 0,
-            },
-          },
-        }}
-      >
+  <Dialog
+  open={openModal}
+  maxWidth="md"
+  fullWidth
+  disablePortal
+  keepMounted
+  sx={{
+    "@media print": {
+      "& .MuiDialog-paper": {
+        boxShadow: "none",
+        overflow: "visible",
+        maxWidth: "100%",
+        width: "100%",
+        margin: 0,
+      },
+    },
+  }}
+>
         <DialogTitle
           sx={{
             fontWeight: 700,
@@ -875,9 +885,10 @@ if (!user?.id) {
 
             <Typography
               color="text.secondary"
+              variant="h6"
               sx={{ mb: 4 }}
             >
-              Documento de liquidación
+              Datos de liquidación
             </Typography>
 
             <Grid
@@ -886,89 +897,202 @@ if (!user?.id) {
               sx={{ mb: 4 }}
             >
               <Grid item xs={6}>
-                <Typography fontWeight={700}>
-                  Propietario
-                </Typography>
+  <Typography
+    fontWeight={700}
+    sx={{
+      fontSize: "13px",
+      textTransform: "uppercase",
+      color: "#555",
+      mb: 0.5,
+    }}
+  >
+    Propietario
+  </Typography>
 
-                <Typography>
-                  {
-                    savedLiquidation?.propietario
-                  }
-                </Typography>
-              </Grid>
+  <Typography
+    sx={{
+      fontSize: "16px",
+      fontWeight: 500,
+    }}
+  >
+    {savedLiquidation?.propietario}
+  </Typography>
+</Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={700}>
-                  Ubicación
-                </Typography>
+<Grid item xs={6}>
+  <Typography
+    fontWeight={700}
+    sx={{
+      fontSize: "13px",
+      textTransform: "uppercase",
+      color: "#555",
+      mb: 0.5,
+    }}
+  >
+    Ubicación
+  </Typography>
 
-                <Typography>
-                  {
-                    savedLiquidation?.ubicacion
-                  }
-                </Typography>
-              </Grid>
+  <Typography
+    sx={{
+      fontSize: "16px",
+      fontWeight: 500,
+    }}
+  >
+    {savedLiquidation?.ubicacion}
+  </Typography>
+</Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={700}>
-                  Tipo de Obra
-                </Typography>
+<Grid item xs={6}>
+  <Typography
+    fontWeight={700}
+    sx={{
+      fontSize: "13px",
+      textTransform: "uppercase",
+      color: "#555",
+      mb: 0.5,
+    }}
+  >
+    Tipo de Obra
+  </Typography>
 
-                <Typography>
-                  {
-                    savedLiquidation?.tipoObra
-                  }
-                </Typography>
-              </Grid>
+  <Typography
+    sx={{
+      fontSize: "16px",
+      fontWeight: 500,
+    }}
+  >
+    {savedLiquidation?.tipoObra}
+  </Typography>
+</Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={700}>
-                  Concepto
-                </Typography>
+<Grid item xs={6}>
+  <Typography
+    fontWeight={700}
+    sx={{
+      fontSize: "13px",
+      textTransform: "uppercase",
+      color: "#555",
+      mb: 0.5,
+    }}
+  >
+    Concepto
+  </Typography>
 
-                <Typography>
-                  {
-                    savedLiquidation?.concepto
-                  }
-                </Typography>
-              </Grid>
+  <Typography
+    sx={{
+      fontSize: "16px",
+      fontWeight: 500,
+    }}
+  >
+    {savedLiquidation?.concepto}
+  </Typography>
+</Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={700}>
-                  Superficie
-                </Typography>
+<Grid item xs={6}>
+  <Typography
+    fontWeight={700}
+    sx={{
+      fontSize: "13px",
+      textTransform: "uppercase",
+      color: "#555",
+      mb: 0.5,
+    }}
+  >
+    Superficie
+  </Typography>
 
-                <Typography>
-                  {
-                    savedLiquidation?.superficie
-                  }{" "}
-                  m²
-                </Typography>
-              </Grid>
+  <Typography
+    sx={{
+      fontSize: "16px",
+      fontWeight: 500,
+    }}
+  >
+    {savedLiquidation?.superficie} m²
+  </Typography>
+</Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={700}>
-                  Categoría
-                </Typography>
+<Grid item xs={6}>
+  <Typography
+    fontWeight={700}
+    sx={{
+      fontSize: "13px",
+      textTransform: "uppercase",
+      color: "#555",
+      mb: 0.5,
+    }}
+  >
+    Categoría
+  </Typography>
 
-                <Typography>
-                  {
-                    selectedCategory?.name
-                  }
-                </Typography>
-              </Grid>
+  <Typography
+    sx={{
+      fontSize: "16px",
+      fontWeight: 500,
+    }}
+  >
+    {selectedCategory?.name}
+  </Typography>
+</Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={700}>
-                  Recargo
-                </Typography>
+<Grid item xs={6}>
+  <Typography
+    fontWeight={700}
+    sx={{
+      fontSize: "13px",
+      textTransform: "uppercase",
+      color: "#555",
+      mb: 0.5,
+    }}
+  >
+    Recargo
+  </Typography>
 
-                <Typography>
-                  {savedLiquidation?.hasSurcharge
-                    ? `Sí (${savedLiquidation?.surchargePercent}%)`
-                    : "No"}
-                </Typography>
-              </Grid>
+  <Typography
+    sx={{
+      fontSize: "16px",
+      fontWeight: 500,
+    }}
+  >
+    {savedLiquidation?.hasSurcharge
+      ? `Sí (${savedLiquidation?.surchargePercent}%)`
+      : "No"}
+  </Typography>
+</Grid>
+
+<Grid item xs={12}>
+  <Box
+    sx={{
+      mt: 2,
+      p: 2,
+      border: "1px solid #ccc",
+      borderRadius: 2,
+      backgroundColor: "#fafafa",
+    }}
+  >
+    <Typography
+      fontWeight={700}
+      sx={{
+        fontSize: "13px",
+        textTransform: "uppercase",
+        color: "#555",
+        mb: 1,
+      }}
+    >
+      Observaciones
+    </Typography>
+
+    <Typography
+      sx={{
+        whiteSpace: "pre-line",
+        fontSize: "15px",
+        lineHeight: 1.6,
+      }}
+    >
+      {savedLiquidation?.observations ||
+        "Sin observaciones"}
+    </Typography>
+  </Box>
+</Grid>
             </Grid>
 
             <Divider sx={{ mb: 3 }} />
@@ -1086,13 +1210,19 @@ if (!user?.id) {
             spacing={2}
             sx={{ mt: 4 }}
           >
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={handlePrint}
-            >
-              Imprimir
-            </Button>
+         <Button
+  type="button"
+  variant="outlined"
+  fullWidth
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    handlePrint();
+  }}
+>
+  Imprimir
+</Button>
 
             <Button
               variant="contained"
