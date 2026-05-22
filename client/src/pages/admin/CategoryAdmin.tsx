@@ -169,7 +169,7 @@ const CategoryAdmin = () => {
       {/* TÍTULO */}
       <Typography
         variant="h4"
-        fontWeight={700}
+        sx={{fontWeight: 700}}
         gutterBottom
       >
         Administración de Categorías
@@ -202,7 +202,7 @@ const CategoryAdmin = () => {
           </Typography>
 
           <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 label="Nombre"
                 name="name"
@@ -213,7 +213,7 @@ const CategoryAdmin = () => {
               />
             </Grid>
 
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 label="Coeficiente"
                 name="coefficient"
@@ -224,7 +224,7 @@ const CategoryAdmin = () => {
               />
             </Grid>
 
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 label="Precio por m²"
                 name="pricePerM2"
@@ -235,7 +235,7 @@ const CategoryAdmin = () => {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <Box
                 sx={{
                   display: "flex",

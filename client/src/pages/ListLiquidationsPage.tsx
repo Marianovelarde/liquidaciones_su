@@ -198,7 +198,7 @@ export default function ListLiquidationsPage() {
     <Box>
       <Typography
         variant="h4"
-        fontWeight={700}
+        sx={{fontWeight: 700}}
         gutterBottom
       >
         Listado de Liquidaciones

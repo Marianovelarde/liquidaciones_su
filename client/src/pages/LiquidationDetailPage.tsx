@@ -218,7 +218,7 @@ export default function LiquidationDetailPage() {
     <Box>
       <Typography
         variant="h4"
-        fontWeight={700}
+        sx={{fontWeight: 700}}
         gutterBottom
       >
         Detalle de Liquidación

@@ -21,10 +21,10 @@ interface User {
 }
 
 // 🔥 obtener usuario real
-const getUserFromStorage = (): User | null => {
-  const user = localStorage.getItem("user");
-  return user ? JSON.parse(user) : null;
-};
+// const getUserFromStorage = (): User | null => {
+//   const user = localStorage.getItem("user");
+//   return user ? JSON.parse(user) : null;
+// };
 
 // ✅ permisos
 const canCreateLiquidation = (user: User | null) => {
@@ -67,7 +67,7 @@ const user = useSelector((state: any) => state.auth.user);
       {/* ACCESOS */}
       <Grid container spacing={3}>
         {/* VER LIQUIDACIONES */}
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Card elevation={2}>
             <CardActionArea
               onClick={() => navigate("/listar")}
@@ -103,7 +103,7 @@ const user = useSelector((state: any) => state.auth.user);
 
         {/* ✅ SOLO SI TIENE PERMISO */}
         {canCreateLiquidation(user) && (
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Card elevation={2}>
               <CardActionArea
                 onClick={() => navigate("/crear")}
@@ -139,7 +139,7 @@ const user = useSelector((state: any) => state.auth.user);
         )}
 
         {/* FILTROS */}
-        <Grid item xs={12} md={4}>
+       <Grid size={{ xs: 12, md: 4 }}>
           <Card elevation={2}>
             <CardActionArea
               onClick={() => navigate("/filtros")}
@@ -148,6 +148,7 @@ const user = useSelector((state: any) => state.auth.user);
                 sx={{
                   display: "flex",
                   alignItems: "center",
+                 
                   gap: 2,
                 }}
               >
@@ -157,7 +158,7 @@ const user = useSelector((state: any) => state.auth.user);
                 />
 
                 <Box>
-                  <Typography variant="subtitle1">
+                  <Typography variant="subtitle2">
                     Buscar / Filtrar
                   </Typography>
 
@@ -165,8 +166,7 @@ const user = useSelector((state: any) => state.auth.user);
                     variant="subtitle2"
                     color="text.secondary"
                   >
-                    Búsqueda por padrón, expediente,
-                    año, etc.
+                   ------------------------------------------
                   </Typography>
                 </Box>
               </CardContent>

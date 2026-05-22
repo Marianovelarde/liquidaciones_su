@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../api/slice/authSlice";
 
 interface Props {
-  children: JSX.Element;
+  children: React.ReactNode;
   roles?: string[];
 }
 

@@ -81,7 +81,7 @@ const MetricCard = ({
           <Typography
             variant="body2"
             color="text.secondary"
-            fontWeight={600}
+            sx={{fontWeight:600}}
           >
             {title}
           </Typography>
@@ -91,7 +91,7 @@ const MetricCard = ({
 
         <Typography
           variant="h4"
-          fontWeight={800}
+          sx={{fontWeight:800}}
         >
           {value}
         </Typography>
@@ -210,7 +210,7 @@ export default function AdminMetrics() {
         <Box>
           <Typography
             variant="h3"
-            fontWeight={800}
+           sx={{fontWeight:800}}
           >
             Panel de Métricas
           </Typography>
@@ -241,7 +241,7 @@ export default function AdminMetrics() {
 
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={3}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <MetricCard
             title="Total m² registrados"
             value={totalM2}
@@ -249,7 +249,7 @@ export default function AdminMetrics() {
           />
         </Grid>
 
-        <Grid item xs={12} md={3}>
+         <Grid size={{ xs: 12, md: 3 }}>
           <MetricCard
             title="Monto total"
             value={`$ ${totalAmount}`}
@@ -257,7 +257,7 @@ export default function AdminMetrics() {
           />
         </Grid>
 
-        <Grid item xs={12} md={3}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <MetricCard
             title="Liquidaciones"
             value={metrics.totalLiquidations}
@@ -265,7 +265,7 @@ export default function AdminMetrics() {
           />
         </Grid>
 
-        <Grid item xs={12} md={3}>
+         <Grid size={{ xs: 12, md: 3 }}>
           <MetricCard
             title="Pendientes"
             value={metrics.pendingLiquidations}
@@ -280,7 +280,7 @@ export default function AdminMetrics() {
         spacing={3}
         sx={{ mt: 1 }}
       >
-        <Grid item xs={12} md={4}>
+         <Grid size={{ xs: 12, md: 4 }}>
           <MetricCard
             title="Liquidaciones pagadas"
             value={metrics.paidLiquidations}
@@ -288,7 +288,7 @@ export default function AdminMetrics() {
           />
         </Grid>
 
-        <Grid item xs={12} md={4}>
+         <Grid size={{ xs: 12, md: 4 }}>
           <MetricCard
             title="Monto recaudado"
             value={`$ ${paidAmount}`}
@@ -296,7 +296,7 @@ export default function AdminMetrics() {
           />
         </Grid>
 
-        <Grid item xs={12} md={4}>
+         <Grid size={{ xs: 12, md: 4 }}>
           <MetricCard
             title="Promedio por liquidación"
             value={`$ ${averageAmount}`}
@@ -316,7 +316,7 @@ export default function AdminMetrics() {
         <CardContent>
           <Typography
             variant="h5"
-            fontWeight={700}
+            sx={{fontWeight: 700}}
             gutterBottom
           >
             Resumen Ejecutivo
@@ -325,7 +325,7 @@ export default function AdminMetrics() {
           <Divider sx={{ mb: 3 }} />
 
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+           <Grid size={{ xs: 12, md: 6 }}>
               <Typography
                 variant="body1"
                 sx={{ mb: 1 }}
@@ -368,7 +368,7 @@ export default function AdminMetrics() {
               </Typography>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
               <Typography
                 variant="body1"
                 sx={{ mb: 1 }}
@@ -435,7 +435,7 @@ export default function AdminMetrics() {
             >
               <Typography
                 variant="h5"
-                fontWeight={700}
+                sx={{fontWeight: 700}}
               >
                 Última liquidación registrada
               </Typography>

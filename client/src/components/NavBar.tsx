@@ -130,7 +130,7 @@ export default function Navbar() {
           </Avatar>
 
           <Box>
-            <Typography variant="body2" fontWeight={600}>
+            <Typography variant="body2" sx={{fontWeight: 600}}>
               {user?.username || "Usuario"}
             </Typography>
 

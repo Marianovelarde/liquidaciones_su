@@ -35,7 +35,7 @@ export default function Footer() {
           <Box>
             <Typography
               variant="body1"
-              fontWeight={700}
+              sx={{fontWeight: 700}}
             >
               Sistema de Liquidaciones
             </Typography>
@@ -59,7 +59,7 @@ export default function Footer() {
           >
             <Typography
               variant="body2"
-              fontWeight={600}
+              sx={{fontWeight: 600}}
             >
               Desarrollado por Mariano
               Velarde    © 2026 

@@ -133,7 +133,7 @@ const UserAdmin = () => {
         await createUser({
           username: form.username,
           password: form.password,
-          role: form.role,
+          role:  "ADMIN" as "ADMIN" | "GENERADOR" | "COBRADOR"
         });
       }
 
@@ -167,7 +167,7 @@ const UserAdmin = () => {
     <Box>
       <Typography
         variant="h4"
-        fontWeight={700}
+        sx={{fontWeight: 700}}
         gutterBottom
       >
         Administración de Usuarios
@@ -200,7 +200,7 @@ const UserAdmin = () => {
           </Typography>
 
           <Grid container spacing={2}>
-            <Grid item xs={4}>
+            <Grid size={4}>
               <TextField
                 label="Usuario"
                 name="username"
@@ -211,7 +211,7 @@ const UserAdmin = () => {
               />
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid size={4}>
               <TextField
                 label={
                   editingId
@@ -227,7 +227,7 @@ const UserAdmin = () => {
               />
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid size={4}>
               <TextField
                 select
                 label="Rol"
@@ -251,7 +251,7 @@ const UserAdmin = () => {
               </TextField>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Box
                 sx={{
                   display: "flex",

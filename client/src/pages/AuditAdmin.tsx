@@ -198,7 +198,7 @@ export default function AuditAdmin() {
           >
             <Typography
               variant="body2"
-              fontWeight={600}
+              sx={{fontWeight: 600}}
             >
               Ver cambios
             </Typography>
@@ -214,7 +214,7 @@ export default function AuditAdmin() {
               >
                 <Typography
                   variant="body2"
-                  fontWeight={700}
+                  sx={{fontWeight:600}}
                 >
                   {field}
                 </Typography>
@@ -269,7 +269,7 @@ export default function AuditAdmin() {
           <Typography
             variant="body2"
             color="success.main"
-            fontWeight={700}
+           sx={{fontWeight: 700}}
           >
             {log.newValue}
           </Typography>
@@ -295,7 +295,7 @@ export default function AuditAdmin() {
         {log.newValue && (
           <Typography
             variant="body2"
-            fontWeight={600}
+            sx={{fontWeight: 600}}
           >
             {log.newValue}
           </Typography>
@@ -312,7 +312,7 @@ export default function AuditAdmin() {
     <Box>
       <Typography
         variant="h4"
-        fontWeight={700}
+       sx={{fontWeight: 700}}
         gutterBottom
       >
         Auditoría del Sistema

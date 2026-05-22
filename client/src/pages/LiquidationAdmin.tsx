@@ -107,7 +107,7 @@ export default function LiquidationAdmin() {
     <Box>
       <Typography
         variant="h5"
-        fontWeight={700}
+        sx={{fontWeight: 700}}
         gutterBottom
       >
         Gestión de Liquidaciones

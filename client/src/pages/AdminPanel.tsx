@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import CategoryAdmin from "../pages/admin/CategoryAdmin";
 import UserAdmin from "../pages/admin/UserAdmin";
 import LiquidationAdmin from "../pages/LiquidationAdmin";
-import AuditAdmin from "../pages/AuditAdmin";
 
 // futuros módulos
 // import LiquidationAdmin from "./LiquidationAdmin";
@@ -59,8 +58,7 @@ const AdminPanel = () => {
 
         <Typography
           variant="h5"
-          fontWeight={700}
-          sx={{ mb: 2 }}
+          sx={{ mb: 2, fontWeight: 700 }}
         >
           Panel Admin
         </Typography>

@@ -146,7 +146,7 @@ dispatch(
 
             <Typography
               variant="h5"
-              mt={2}
+              sx={{mt:2}}
             >
               Sistema de Liquidaciones
             </Typography>

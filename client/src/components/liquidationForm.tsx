@@ -308,8 +308,11 @@ if (!user?.id) {
       >
         <Typography
           variant="h4"
-          fontWeight={600}
           gutterBottom
+          sx={{
+          fontWeight: 600,
+          }}
+       
         >
           Liquidación de Derechos de
           Edificación
@@ -342,7 +345,7 @@ if (!user?.id) {
             </Typography>
 
             <Grid container spacing={2}>
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <TextField
                   size="small"
                   label="Liquidación N°"
@@ -353,7 +356,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <TextField
                   size="small"
                   label="Concepto"
@@ -364,7 +367,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <TextField
                   size="small"
                   label="Propietario"
@@ -375,7 +378,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <TextField
                   select
                   size="small"
@@ -412,20 +415,18 @@ if (!user?.id) {
             </Typography>
 
             <Grid container spacing={2} sx={{ flexWrap: "nowrap" }}>
-              <Grid item xs={4}>
-                <TextField
-                  size="small"
-                  label="Expediente Nº"
-                  name="expedienteNumero"
-                  value={
-                    form.expedienteNumero
-                  }
-                  fullWidth
-                  onChange={handleChange}
-                />
+         <Grid size={4}>
+            <TextField
+                size="small"
+                label="Expediente Nº"
+                name="expedienteNumero"
+                value={form.expedienteNumero}
+                fullWidth
+                onChange={handleChange}
+              />
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <TextField
                   size="small"
                   label="Código"
@@ -435,7 +436,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <TextField
                   size="small"
                   label="Año"
@@ -448,7 +449,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <TextField
                   size="small"
                   label="Carpeta Nº"
@@ -461,7 +462,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <TextField
                   size="small"
                   label="Letra"
@@ -474,7 +475,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <TextField
                   size="small"
                   label="Año"
@@ -508,7 +509,7 @@ if (!user?.id) {
             </Typography>
 
             <Grid container spacing={2}>
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <TextField
                   size="small"
                   label="Distrito"
@@ -519,7 +520,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <TextField
                   size="small"
                   label="Zona"
@@ -530,7 +531,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <TextField
                   size="small"
                   label="Manzana"
@@ -541,7 +542,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <TextField
                   size="small"
                   label="Parcela"
@@ -573,7 +574,7 @@ if (!user?.id) {
             </Typography>
 
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <TextField
                   size="small"
                   label="Ubicación"
@@ -584,7 +585,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <TextField
                   size="small"
                   label="Tipo de Obra"
@@ -595,7 +596,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <TextField
                   size="small"
                   label="Superficie (m²)"
@@ -606,7 +607,7 @@ if (!user?.id) {
                 />
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <TextField
                   select
                   size="small"
@@ -629,7 +630,7 @@ if (!user?.id) {
                 </TextField>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <TextField
                   select
                   size="small"
@@ -652,7 +653,7 @@ if (!user?.id) {
 
               {form.hasSurcharge ===
                 "true" && (
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <TextField
                     size="small"
                     label="Recargo (%)"
@@ -668,7 +669,7 @@ if (!user?.id) {
                 </Grid>
               )}
 
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <TextField
                   size="small"
                   label="Observaciones"
@@ -707,78 +708,89 @@ if (!user?.id) {
             <Divider sx={{ mb: 2 }} />
 
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography>
                   Coeficiente aplicado:
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={600}>
+              <Grid size={6}>
+                <Typography  sx={{
+                    fontWeight: 600,
+                    }}>
                   {selectedCategory?.coefficient ||
                     "-"}
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography>
                   Precio por m²:
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={600}>
+              <Grid size={6}>
+                <Typography  sx={{
+          fontWeight: 600,
+          }}>
                   $
                   {selectedCategory?.pricePerM2?.toLocaleString() ||
                     "-"}
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography>
                   Subtotal:
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={600}>
+              <Grid size={6}>
+                <Typography  sx={{
+                  fontWeight: 600,
+                   }}>
                   $
                   {subtotal.toLocaleString()}
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography>
                   Recargo:
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={600}>
+              <Grid size={6}>
+                <Typography sx={{
+                  fontWeight: 600,
+                   }}>
                   $
                   {surchargeValue.toLocaleString()}
                 </Typography>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Divider sx={{ my: 1 }} />
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography
                   variant="h5"
-                  fontWeight={700}
-                >
+                  sx={{
+                  fontWeight: 700,
+                   }}>
+                
                   TOTAL FINAL
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography
                   variant="h4"
                   color="primary"
-                  fontWeight={700}
-                >
+                 sx={{
+                  fontWeight: 700,
+                   }}>
                   $
                   {totalFinal.toLocaleString()}
                 </Typography>
@@ -851,7 +863,7 @@ if (!user?.id) {
             >
               <Typography
                 variant="h5"
-                fontWeight={700}
+                sx={{fontWeight: 700}}
               >
                 Municipalidad de la Capital
               </Typography>
@@ -874,8 +886,10 @@ if (!user?.id) {
 
             <Typography
               variant="h5"
-              fontWeight={700}
               gutterBottom
+             sx={{
+                  fontWeight: 700,
+                   }}
             >
               Liquidación Nº{" "}
               {
@@ -896,10 +910,11 @@ if (!user?.id) {
               spacing={2}
               sx={{ mb: 4 }}
             >
-              <Grid item xs={6}>
+              <Grid size={6}>
   <Typography
-    fontWeight={700}
+   
     sx={{
+      fontWeight: 700,
       fontSize: "13px",
       textTransform: "uppercase",
       color: "#555",
@@ -919,10 +934,11 @@ if (!user?.id) {
   </Typography>
 </Grid>
 
-<Grid item xs={6}>
+<Grid size={6}>
   <Typography
-    fontWeight={700}
+   
     sx={{
+      fontWeight: 700,
       fontSize: "13px",
       textTransform: "uppercase",
       color: "#555",
@@ -942,10 +958,11 @@ if (!user?.id) {
   </Typography>
 </Grid>
 
-<Grid item xs={6}>
+<Grid size={6}>
   <Typography
-    fontWeight={700}
+ 
     sx={{
+      fontWeight: 700,
       fontSize: "13px",
       textTransform: "uppercase",
       color: "#555",
@@ -965,10 +982,11 @@ if (!user?.id) {
   </Typography>
 </Grid>
 
-<Grid item xs={6}>
+<Grid size={6}>
   <Typography
-    fontWeight={700}
+   
     sx={{
+      fontWeight: 700,
       fontSize: "13px",
       textTransform: "uppercase",
       color: "#555",
@@ -988,10 +1006,11 @@ if (!user?.id) {
   </Typography>
 </Grid>
 
-<Grid item xs={6}>
+<Grid size={6}>
   <Typography
-    fontWeight={700}
+
     sx={{
+      fontWeight: 700,
       fontSize: "13px",
       textTransform: "uppercase",
       color: "#555",
@@ -1011,10 +1030,10 @@ if (!user?.id) {
   </Typography>
 </Grid>
 
-<Grid item xs={6}>
+<Grid size={6}>
   <Typography
-    fontWeight={700}
     sx={{
+      fontWeight: 700,
       fontSize: "13px",
       textTransform: "uppercase",
       color: "#555",
@@ -1034,10 +1053,11 @@ if (!user?.id) {
   </Typography>
 </Grid>
 
-<Grid item xs={6}>
+<Grid size={6}>
   <Typography
-    fontWeight={700}
+    
     sx={{
+      fontWeight: 700,
       fontSize: "13px",
       textTransform: "uppercase",
       color: "#555",
@@ -1059,7 +1079,7 @@ if (!user?.id) {
   </Typography>
 </Grid>
 
-<Grid item xs={12}>
+<Grid size={12}>
   <Box
     sx={{
       mt: 2,
@@ -1070,8 +1090,8 @@ if (!user?.id) {
     }}
   >
     <Typography
-      fontWeight={700}
       sx={{
+        fontWeight: 700,
         fontSize: "13px",
         textTransform: "uppercase",
         color: "#555",
@@ -1105,77 +1125,77 @@ if (!user?.id) {
             </Typography>
 
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography>
                   Coeficiente aplicado
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={700}>
+              <Grid size={6}>
+                <Typography  sx={{fontWeight: 700}}>
                   {
                     selectedCategory?.coefficient
-                  }
+                  } %
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography>
                   Precio por m²
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={700}>
+              <Grid size={6}>
+                <Typography sx={{fontWeight: 700}}>
                   $
                   {selectedCategory?.pricePerM2?.toLocaleString()}
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography>
                   Subtotal
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={700}>
+              <Grid size={6}>
+                <Typography sx={{fontWeight: 700}}>
                   $
                   {subtotal.toLocaleString()}
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography>
                   Recargo
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
-                <Typography fontWeight={700}>
+              <Grid size={6}>
+                <Typography sx={{fontWeight: 700}}>
                   $
                   {surchargeValue.toLocaleString()}
                 </Typography>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Divider sx={{ my: 2 }} />
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography
                   variant="h5"
-                  fontWeight={700}
+                  sx={{fontWeight: 700}}
                 >
                   TOTAL
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Typography
                   variant="h4"
                   color="primary"
-                  fontWeight={700}
+                 sx={{fontWeight: 700}}
                 >
                   $
                   {totalFinal.toLocaleString()}
