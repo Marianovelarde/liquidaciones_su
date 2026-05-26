@@ -50,6 +50,7 @@ const updateLiquidationRepo = async (id, data) => {
             superficie: Number(data.superficie),
             total: Number(data.total),
             status: data.status,
+            receiptNumber: data.receiptNumber
         },
         include: {
             category: true,

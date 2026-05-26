@@ -1,11 +1,13 @@
 module.exports = {
-  apps : [{
-    script: 'index.js',
-    watch: '.'
-  }, {
-    script: './service-worker/',
-    watch: ['./service-worker']
-  }],
+  apps: [
+    {
+      name: "frontend",
+      script: "npx",
+      args: "serve -s dist --single -l 5173",
+      cwd: "C:/Users/informatica/Desktop/proyectos/liquidaciones_su/client",
+      interpreter: "none",
+    },
+  ],
 
   deploy : {
     production : {

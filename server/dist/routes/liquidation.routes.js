@@ -18,7 +18,11 @@ router.patch("/:id/status", auth_middleware_1.authMiddleware, (0, requireRoles_1
 // GET BY ID → TODOS
 router.get("/:id", auth_middleware_1.authMiddleware, (0, requireRoles_1.requireRoles)(["ADMIN", "COBRADOR", "GENERADOR"]), liquidation_controller_1.getLiquidationById);
 // UPDATE COMPLETO → SOLO ADMIN
-router.put("/:id", auth_middleware_1.authMiddleware, requireAdmin_1.requireAdmin, liquidation_controller_1.updateLiquidation);
+router.put("/:id", auth_middleware_1.authMiddleware, (0, requireRoles_1.requireRoles)([
+    "ADMIN",
+    "COBRADOR",
+    "GENERADOR",
+]), liquidation_controller_1.updateLiquidation);
 // DELETE → SOLO ADMIN
 router.delete("/:id", auth_middleware_1.authMiddleware, requireAdmin_1.requireAdmin, liquidation_controller_1.deleteLiquidation);
 exports.default = router;
