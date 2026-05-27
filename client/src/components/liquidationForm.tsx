@@ -1105,11 +1105,11 @@ const [snackSeverity, setSnackSeverity] =
           mb: 0.5,
         }}
       >
-        Manzana
+        Código
       </Typography>
 
       <Typography sx={{ fontSize: "16px" }}>
-        {savedLiquidation?.manzana}
+        {savedLiquidation?.expedienteCodigo}
       </Typography>
     </Box>
   </Grid>
@@ -1125,11 +1125,11 @@ const [snackSeverity, setSnackSeverity] =
           mb: 0.5,
         }}
       >
-        Parcela
+        Año
       </Typography>
 
       <Typography sx={{ fontSize: "16px" }}>
-        {savedLiquidation?.parcela}
+        {savedLiquidation?.expedienteAnio}
       </Typography>
     </Box>
   </Grid>
