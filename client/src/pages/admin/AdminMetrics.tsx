@@ -118,10 +118,7 @@ export default function AdminMetrics() {
       const res =
         await getSystemMetrics();
 
-      console.log(
-        "METRICS RESPONSE:",
-        res
-      );
+    
 
       setMetrics(res);
 

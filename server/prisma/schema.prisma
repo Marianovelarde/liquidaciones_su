@@ -98,7 +98,7 @@ model Liquidation {
   distrito Int
   zona     Int
   manzana  Int
-  parcela  Int
+  parcela  String
 
   //////////////////////////////////////////
   // Datos de obra

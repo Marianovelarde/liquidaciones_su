@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
+import React from "react";
 import { logout } from "../api/slice/authSlice";
 
 interface Props {

@@ -20,7 +20,7 @@ export interface CreateLiquidationDTO {
   distrito: number;
   zona: number;
   manzana: number;
-  parcela: number;
+  parcela: string;
 
   // datos generales
   propietario: string;
@@ -64,7 +64,7 @@ export interface UpdateLiquidationDTO {
   distrito?: number;
   zona?: number;
   manzana?: number;
-  parcela?: number;
+  parcela?: string;
 
   propietario?: string;
   ubicacion?: string;

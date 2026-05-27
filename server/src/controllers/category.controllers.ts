@@ -19,7 +19,7 @@ export const getCategories = async (_req: Request, res: Response) => {
 
 export const createCategory = async (req: Request, res: Response) => {
   try {
-    console.log("BODY RECIBIDO:", req.body);
+ 
 
     const category = await createCategoryService(req.body);
 

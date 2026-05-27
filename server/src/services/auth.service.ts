@@ -20,9 +20,6 @@ const isPasswordValid = await bcrypt.compare(
   password,
   user.password
 );
-console.log("PASSWORD FRONT:", password);
-console.log("PASSWORD DB:", user.password);
-console.log("COMPARE RESULT:", isPasswordValid);
 
   if (!isPasswordValid) {
     throw new Error("Contraseña incorrecta");

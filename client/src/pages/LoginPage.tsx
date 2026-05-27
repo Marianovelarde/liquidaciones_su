@@ -63,10 +63,7 @@ export default function LoginPage() {
     try {
       const res = await loginRequest(form);
 
-      console.log(
-        "LOGIN RESPONSE:",
-        res.data
-      );
+    
 
       if (
         !res.data?.token ||
@@ -90,10 +87,8 @@ dispatch(
 
       navigate("/");
     } catch (error: any) {
-      console.log(
-        "LOGIN ERROR:",
-        error
-      );
+     
+ -
 
       alert(
         error?.response?.data?.error ||
