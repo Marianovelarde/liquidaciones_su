@@ -996,13 +996,7 @@ const [snackSeverity, setSnackSeverity] =
                 }
               </Typography>
 
-              <Typography
-                color="text.secondary"
-                variant="h6"
-                sx={{ mb: 3, marginTop: "-70px" }}
-              >
-                Datos de liquidación
-              </Typography>
+
 
 <Grid
   container
