@@ -16,6 +16,8 @@
     DialogContent,
     DialogTitle,
     Stack,
+      Snackbar,
+  Alert,
   } from "@mui/material";
 
   import { createLiquidation } from "../api/liquidation.api";
@@ -76,6 +78,16 @@
       status: "PENDIENTE_DE_PAGO",
     });
 
+    const [snackOpen, setSnackOpen] =
+  useState(false);
+
+const [snackMessage, setSnackMessage] =
+  useState("");
+
+const [snackSeverity, setSnackSeverity] =
+  useState<
+    "success" | "error" | "warning" | "info"
+  >("error");
     useEffect(() => {
       getCategories().then((res) => {
         setCategories(res.data);
@@ -102,6 +114,88 @@
         setSelectedCategory(cat || null);
       }
     };
+
+    const getErrorMessage = (
+  error: any
+): string => {
+
+  const backendError =
+    error?.response?.data?.error || "";
+
+  //////////////////////////////////////////////////////
+  // Prisma - Int/String
+  //////////////////////////////////////////////////////
+
+  if (
+    backendError.includes(
+      "Expected Int, provided String"
+    )
+  ) {
+
+    const match =
+      backendError.match(
+        /Argument `(.*?)`/
+      );
+
+    const field =
+      match?.[1] || "desconocido";
+
+    return `El campo "${field}" debe contener solo números.`;
+  }
+
+  //////////////////////////////////////////////////////
+  // Unique constraint
+  //////////////////////////////////////////////////////
+
+  if (
+    backendError.includes(
+      "Unique constraint failed"
+    )
+  ) {
+    return "Ya existe un registro con esos datos.";
+  }
+
+  //////////////////////////////////////////////////////
+  // Required field
+  //////////////////////////////////////////////////////
+
+  if (
+    backendError.includes(
+      "Argument"
+    ) &&
+    backendError.includes(
+      "is missing"
+    )
+  ) {
+    return "Faltan completar campos obligatorios.";
+  }
+
+  //////////////////////////////////////////////////////
+  // Error servidor
+  //////////////////////////////////////////////////////
+
+  if (
+    error?.response?.status === 500
+  ) {
+    return "Error interno del servidor.";
+  }
+
+  //////////////////////////////////////////////////////
+  // Sin conexión
+  //////////////////////////////////////////////////////
+
+  if (
+    error?.code === "ERR_NETWORK"
+  ) {
+    return "No se pudo conectar con el servidor.";
+  }
+
+  //////////////////////////////////////////////////////
+  // Default
+  //////////////////////////////////////////////////////
+
+  return "Ocurrió un error al procesar la solicitud.";
+};
 
     //////////////////////////////////////////////////////
     // CÁLCULOS
@@ -156,13 +250,13 @@
             form.expedienteAnio
           ),
 
-          carpetaNumero: Number(
+          carpetaNumero: String(
             form.carpetaNumero
           ),
 
           carpetaLetra: form.carpetaLetra,
 
-          carpetaAnio: Number(
+          carpetaAnio: String(
             form.carpetaAnio
           ),
 
@@ -216,16 +310,20 @@
 
         setOpenModal(true);
       } catch (error: any) {
-        console.error(
-          "ERROR COMPLETO:",
-          error?.response?.data || error
-        );
 
-        alert(
-          error?.response?.data?.error ||
-            "Error al guardar la liquidación"
-        );
-      }
+  console.error(
+    "ERROR COMPLETO:",
+    error?.response?.data || error
+  );
+
+  setSnackMessage(
+    getErrorMessage(error)
+  );
+
+  setSnackSeverity("error");
+
+  setSnackOpen(true);
+}
     };
 
     //////////////////////////////////////////////////////
@@ -1325,6 +1423,27 @@
             </Stack>
           </DialogContent>
         </Dialog>
+        <Snackbar
+  open={snackOpen}
+  autoHideDuration={5000}
+  onClose={() => setSnackOpen(false)}
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    severity={snackSeverity}
+    variant="filled"
+    onClose={() => setSnackOpen(false)}
+    sx={{
+      width: "100%",
+      fontWeight: 500,
+    }}
+  >
+    {snackMessage}
+  </Alert>
+</Snackbar>
       </>
     );
   }
