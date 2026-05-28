@@ -87,9 +87,9 @@ model Liquidation {
   // Carpeta
   //////////////////////////////////////////
 
-  carpetaNumero Int
+  carpetaNumero String
   carpetaLetra  String
-  carpetaAnio   Int
+  carpetaAnio   String
 
   //////////////////////////////////////////
   // Padrón
@@ -164,6 +164,7 @@ model Liquidation {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 }
 
 enum AuditAction {

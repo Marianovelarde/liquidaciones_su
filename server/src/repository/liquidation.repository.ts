@@ -25,6 +25,9 @@ export const createLiquidationRepo = async (
 // GET ALL
 export const getAllLiquidationsRepo = async () => {
   return await prisma.liquidation.findMany({
+    where: {
+      deletedAt: null,
+    },
     include: {
       category: true,
     },
@@ -37,9 +40,10 @@ export const getAllLiquidationsRepo = async () => {
 
 // GET BY ID
 export const getLiquidationByIdRepo = async (id: number) => {
-  return await prisma.liquidation.findUnique({
+  return await prisma.liquidation.findFirst({
     where: {
       id,
+      deletedAt: null,
     },
     include: {
       category: true,
@@ -71,9 +75,12 @@ export const updateLiquidationRepo = async (
 
 // DELETE
 export const deleteLiquidationRepo = async (id: number) => {
-  return await prisma.liquidation.delete({
+  return await prisma.liquidation.update({
     where: {
       id,
+    },
+    data: {
+      deletedAt: new Date(),
     },
   });
 };

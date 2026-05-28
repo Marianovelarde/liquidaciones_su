@@ -12,9 +12,9 @@ export interface CreateLiquidationDTO {
   expedienteAnio: number;
 
   // carpeta
-  carpetaNumero: number;
+  carpetaNumero: string;
   carpetaLetra: string;
-  carpetaAnio: number;
+  carpetaAnio: string;
 
   // padrón
   distrito: number;
@@ -34,6 +34,7 @@ export interface CreateLiquidationDTO {
   categoryId: number;
 
   createdById: number;
+
 
   // recargo
   hasSurcharge: boolean;
@@ -57,9 +58,9 @@ export interface UpdateLiquidationDTO {
   expedienteCodigo?: number;
   expedienteAnio?: number;
 
-  carpetaNumero?: number;
+  carpetaNumero?: string;
   carpetaLetra?: string;
-  carpetaAnio?: number;
+  carpetaAnio?: string;
 
   distrito?: number;
   zona?: number;

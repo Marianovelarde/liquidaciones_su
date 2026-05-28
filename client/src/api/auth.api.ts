@@ -3,7 +3,8 @@ import axios from "axios";
 
 // Creamos una instancia dedicada exclusivamente a este backend
 const api = axios.create({
-  baseURL: "http://192.168.1.7:3002/api"
+  baseURL: "http://192.168.1.7:3002/api" 
+  // baseURL: "http://localhost:3002/api"
 });
 
 export const loginRequest = (data: {

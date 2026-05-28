@@ -75,6 +75,9 @@ export default function LiquidationDetailPage() {
   const [feedbackModal, setFeedbackModal] =
     useState(false);
 
+    const [originalReceiptNumber, setOriginalReceiptNumber] =
+  useState("");
+
   const [feedbackMessage, setFeedbackMessage] =
     useState("");
 
@@ -94,6 +97,10 @@ export default function LiquidationDetailPage() {
       );
 
       setForm(res.data);
+
+setOriginalReceiptNumber(
+  res.data.receiptNumber || ""
+);
     } catch (error) {
       console.error(error);
     }
@@ -540,18 +547,16 @@ export default function LiquidationDetailPage() {
                 size={{ xs: 12, md: 6 }}
               >
                 <TextField
-                  label="N° de Boleta"
-                  fullWidth
-                  value={
-                    form.receiptNumber || ""
-                  }
-                  disabled={
-  !isAdmin &&
-  !!form.receiptNumber
-}
-                  name="receiptNumber"
-                  onChange={handleChange}
-                />
+  label="N° de Boleta"
+  fullWidth
+  value={form.receiptNumber || ""}
+  disabled={
+    !isAdmin &&
+    !!originalReceiptNumber
+  }
+  name="receiptNumber"
+  onChange={handleChange}
+/>
               </Grid>
             )}
 

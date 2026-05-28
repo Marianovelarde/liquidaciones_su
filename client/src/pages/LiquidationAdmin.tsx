@@ -32,11 +32,18 @@ import {
 
 interface Liquidation {
   id: number;
+
   propietario: string;
+
   ubicacion: string;
+
   superficie: number;
+
   total: number;
+
   status: string;
+
+  deletedAt?: string | null;
 
   category?: {
     name: string;
@@ -54,6 +61,10 @@ export default function LiquidationAdmin() {
   const [openDelete, setOpenDelete] =
     useState(false);
 
+  //////////////////////////////////////////////////////
+  // LOAD
+  //////////////////////////////////////////////////////
+
   const loadLiquidations = async () => {
     try {
       const res =
@@ -69,20 +80,37 @@ export default function LiquidationAdmin() {
     loadLiquidations();
   }, []);
 
+  //////////////////////////////////////////////////////
+  // OPEN DELETE
+  //////////////////////////////////////////////////////
+
   const handleOpenDelete = (
     id: number
   ) => {
     setSelectedId(id);
+
     setOpenDelete(true);
   };
+
+  //////////////////////////////////////////////////////
+  // LOGICAL DELETE
+  //////////////////////////////////////////////////////
 
   const handleDelete = async () => {
     try {
       if (!selectedId) return;
 
+      //////////////////////////////////////////////////////
+      // DELETE LÓGICO
+      //////////////////////////////////////////////////////
+
       await deleteLiquidation(
         selectedId
       );
+
+      //////////////////////////////////////////////////////
+      // REMOVE FRONT
+      //////////////////////////////////////////////////////
 
       setData((prev) =>
         prev.filter(
@@ -90,24 +118,39 @@ export default function LiquidationAdmin() {
         )
       );
 
+      //////////////////////////////////////////////////////
+      // CLOSE MODAL
+      //////////////////////////////////////////////////////
+
       setOpenDelete(false);
 
+      setSelectedId(null);
+
+      //////////////////////////////////////////////////////
+      // SUCCESS
+      //////////////////////////////////////////////////////
+
       alert(
-        "Liquidación eliminada"
+        "Liquidación eliminada correctamente"
       );
     } catch (error) {
       console.error(error);
+
       alert(
         "Error eliminando liquidación"
       );
     }
   };
 
+  //////////////////////////////////////////////////////
+  // RENDER
+  //////////////////////////////////////////////////////
+
   return (
     <Box>
       <Typography
         variant="h5"
-        sx={{fontWeight: 700}}
+        sx={{ fontWeight: 700 }}
         gutterBottom
       >
         Gestión de Liquidaciones
@@ -251,7 +294,9 @@ export default function LiquidationAdmin() {
         </CardContent>
       </Card>
 
-      {/* MODAL DELETE */}
+      //////////////////////////////////////////////////////
+      // MODAL DELETE
+      //////////////////////////////////////////////////////
 
       <Dialog
         open={openDelete}
