@@ -1341,14 +1341,14 @@ const [snackSeverity, setSnackSeverity] =
                   </Typography>
                 </Grid>
 
-                <Grid size={12}>
+                <Grid size={8}>
                   <Divider sx={{ my: 2 }} />
                 </Grid>
 
                 <Grid size={6}>
                   <Typography
                     variant="h5"
-                    sx={{fontWeight: 700}}
+                    sx={{fontWeight: 600}}
                   >
                     TOTAL
                   </Typography>
@@ -1358,7 +1358,7 @@ const [snackSeverity, setSnackSeverity] =
                   <Typography
                     variant="h4"
                     color="primary"
-                  sx={{fontWeight: 700}}
+                  sx={{fontWeight: 600}}
                   >
                     $
                     {totalFinal.toLocaleString()}
@@ -1368,23 +1368,25 @@ const [snackSeverity, setSnackSeverity] =
 
               {/* AVISO */}
 
-              <Box
-                sx={{
-                  mt: 6,
-                  pt: 2,
-                  borderTop:
-                    "1px dashed #999",
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                >
-                  No válido como comprobante de
-                  pago
-                </Typography>
-              </Box>
+            <Box
+  sx={{
+    mt: 4,
+    pt: 2,
+    borderTop: "1px dashed #999",
+    textAlign: "center",
+
+    pageBreakInside: "avoid",
+    breakInside: "avoid",
+    pageBreakBefore: "auto",
+  }}
+>
+  <Typography
+    variant="caption"
+    color="text.secondary"
+  >
+    No válido como comprobante de pago
+  </Typography>
+</Box>
             </Box>
 
             <Stack

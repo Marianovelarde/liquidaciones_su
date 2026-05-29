@@ -15,7 +15,6 @@ const loginService = async (username, password) => {
     }
     // comparar password hasheada
     const isPasswordValid = await bcrypt_1.default.compare(password, user.password);
- 
     if (!isPasswordValid) {
         throw new Error("Contraseña incorrecta");
     }

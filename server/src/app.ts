@@ -8,14 +8,16 @@ app.use(cors({
   origin: [
     "http://localhost:5173",
     "http://localhost:5174",
-    "http://192.168.1.7:5173"
+    "http://192.168.1.7:5173",
+    "http://192.168.1.7:3000"
   ],
   methods: [
     "GET",
     "POST",
     "PUT",
     "PATCH",
-    "DELETE"
+    "DELETE",
+    "OPTIONS"
   ],
   allowedHeaders: [
     "Content-Type",

@@ -16,7 +16,6 @@ const getCategories = async (_req, res) => {
 exports.getCategories = getCategories;
 const createCategory = async (req, res) => {
     try {
-    
         const category = await (0, category_services_1.createCategoryService)(req.body);
         console.log("CATEGORY CREADA:", category);
         res.status(201).json(category);

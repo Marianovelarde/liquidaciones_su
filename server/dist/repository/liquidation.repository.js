@@ -19,6 +19,9 @@ exports.createLiquidationRepo = createLiquidationRepo;
 // GET ALL
 const getAllLiquidationsRepo = async () => {
     return await client_1.default.liquidation.findMany({
+        where: {
+            deletedAt: null,
+        },
         include: {
             category: true,
         },
@@ -30,9 +33,10 @@ const getAllLiquidationsRepo = async () => {
 exports.getAllLiquidationsRepo = getAllLiquidationsRepo;
 // GET BY ID
 const getLiquidationByIdRepo = async (id) => {
-    return await client_1.default.liquidation.findUnique({
+    return await client_1.default.liquidation.findFirst({
         where: {
             id,
+            deletedAt: null,
         },
         include: {
             category: true,
@@ -60,9 +64,12 @@ const updateLiquidationRepo = async (id, data) => {
 exports.updateLiquidationRepo = updateLiquidationRepo;
 // DELETE
 const deleteLiquidationRepo = async (id) => {
-    return await client_1.default.liquidation.delete({
+    return await client_1.default.liquidation.update({
         where: {
             id,
+        },
+        data: {
+            deletedAt: new Date(),
         },
     });
 };

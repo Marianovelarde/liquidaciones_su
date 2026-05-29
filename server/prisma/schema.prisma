@@ -162,9 +162,9 @@ model Liquidation {
   // Fechas
   //////////////////////////////////////////
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+deletedAt DateTime?
 }
 
 enum AuditAction {
