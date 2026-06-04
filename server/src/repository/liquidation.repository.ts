@@ -34,6 +34,7 @@ export const getAllLiquidationsRepo = async () => {
     orderBy: {
       createdAt: "desc",
     },
+
   });
 };
 
@@ -48,6 +49,9 @@ export const getLiquidationByIdRepo = async (id: number) => {
     include: {
       category: true,
     },
+    orderBy: {
+      createdAt: "desc"
+    }
   });
 };
 

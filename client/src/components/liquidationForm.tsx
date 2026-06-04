@@ -996,7 +996,18 @@ const [snackSeverity, setSnackSeverity] =
                 }
               </Typography>
 
-
+<Typography
+  variant="body1"
+  sx={{
+    mb: 2,
+    fontWeight: 500,
+  }}
+>
+  Fecha:{" "}
+  {new Date(
+    savedLiquidation?.createdAt
+  ).toLocaleDateString("es-AR")}
+</Typography>
 
 <Grid
   container
@@ -1298,7 +1309,7 @@ const [snackSeverity, setSnackSeverity] =
                   <Typography  sx={{fontWeight: 700}}>
                     {
                       selectedCategory?.coefficient
-                    } %
+                    } 
                   </Typography>
                 </Grid>
 

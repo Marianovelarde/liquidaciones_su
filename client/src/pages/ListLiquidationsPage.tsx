@@ -30,6 +30,7 @@ interface Liquidation {
   superficie: number;
   total: number;
   status: string;
+  createdAt: string;
 
   category?: {
     id: number;
@@ -310,6 +311,7 @@ export default function ListLiquidationsPage() {
                 <TableCell>
                   Estado
                 </TableCell>
+                <TableCell>Fecha</TableCell>
               </TableRow>
             </TableHead>
 
@@ -367,13 +369,28 @@ export default function ListLiquidationsPage() {
                       )}
                     />
                   </TableCell>
+                  <TableCell>
+  <Chip
+    label={l.status}
+    size="small"
+    color={getStatusColor(
+      l.status
+    )}
+  />
+</TableCell>
+
+<TableCell>
+  {new Date(
+    l.createdAt
+  ).toLocaleDateString("es-AR")}
+</TableCell>
                 </TableRow>
               ))}
 
               {!sortedData.length && (
                 <TableRow>
                   <TableCell
-                    colSpan={6}
+                    colSpan={7}
                     align="center"
                   >
                     No hay liquidaciones
