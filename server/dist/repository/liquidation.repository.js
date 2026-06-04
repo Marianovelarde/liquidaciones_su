@@ -41,6 +41,9 @@ const getLiquidationByIdRepo = async (id) => {
         include: {
             category: true,
         },
+        orderBy: {
+            createdAt: "desc"
+        }
     });
 };
 exports.getLiquidationByIdRepo = getLiquidationByIdRepo;

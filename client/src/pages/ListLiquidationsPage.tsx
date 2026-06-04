@@ -370,13 +370,7 @@ export default function ListLiquidationsPage() {
                     />
                   </TableCell>
                   <TableCell>
-  <Chip
-    label={l.status}
-    size="small"
-    color={getStatusColor(
-      l.status
-    )}
-  />
+
 </TableCell>
 
 <TableCell>

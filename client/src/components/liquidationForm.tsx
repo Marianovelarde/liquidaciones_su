@@ -1383,6 +1383,7 @@ const [snackSeverity, setSnackSeverity] =
   sx={{
     mt: 4,
     pt: 2,
+    marginTop: "-50px",
     borderTop: "1px dashed #999",
     textAlign: "center",
 
