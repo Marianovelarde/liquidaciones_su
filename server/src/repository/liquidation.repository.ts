@@ -63,14 +63,40 @@ export const updateLiquidationRepo = async (
 ) => {
   return await prisma.liquidation.update({
     where: { id },
-    data: {
-      propietario: data.propietario,
-      ubicacion: data.ubicacion,
-      superficie: Number(data.superficie),
-      total: Number(data.total),
-      status: data.status,
-      receiptNumber: data.receiptNumber
-    },
+data: {
+  propietario: data.propietario,
+  ubicacion: data.ubicacion,
+
+  superficie:
+    data.superficie !== undefined
+      ? Number(data.superficie)
+      : undefined,
+
+  total:
+    data.total !== undefined
+      ? Number(data.total)
+      : undefined,
+
+  hasSurcharge: data.hasSurcharge,
+
+  isFullSurcharge:
+    data.isFullSurcharge,
+
+  surchargeSurface:
+    data.surchargeSurface !== undefined
+      ? Number(data.surchargeSurface)
+      : undefined,
+
+  surchargePercent:
+    data.surchargePercent !== undefined
+      ? Number(data.surchargePercent)
+      : undefined,
+
+  status: data.status,
+
+  receiptNumber:
+    data.receiptNumber
+},
     include: {
       category: true,
     },

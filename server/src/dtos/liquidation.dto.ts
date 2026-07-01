@@ -37,8 +37,15 @@ export interface CreateLiquidationDTO {
 
 
   // recargo
-  hasSurcharge: boolean;
-  surchargePercent?: number;
+hasSurcharge: boolean;
+
+// true = recargo sobre toda la superficie
+isFullSurcharge?: boolean;
+
+// superficie afectada por el recargo
+surchargeSurface?: number;
+
+surchargePercent?: number;
 
   // observaciones
   observations?: string;

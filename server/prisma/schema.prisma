@@ -129,8 +129,13 @@ model Liquidation {
   // Recargo
   //////////////////////////////////////////
 
-  hasSurcharge     Boolean @default(false)
-  surchargePercent Float?
+hasSurcharge Boolean @default(false)
+
+isFullSurcharge Boolean?
+
+surchargeSurface Float?
+
+surchargePercent Float?
 
   //////////////////////////////////////////
   // Observaciones

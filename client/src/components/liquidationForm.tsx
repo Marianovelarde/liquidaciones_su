@@ -68,6 +68,7 @@
       concepto: "",
 
       superficie: "",
+       surchargeArea: "",
       categoryId: "",
 
       hasSurcharge: "false",
@@ -93,7 +94,10 @@ const [snackSeverity, setSnackSeverity] =
         setCategories(res.data);
       });
     }, []);
+const [isFullSurcharge, setIsFullSurcharge] = useState(true);
 
+// const [surchargeSurface, setSurchargeSurface] =
+//   useState<number | "">("");
     const handleChange = (
       e: React.ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement
@@ -201,21 +205,39 @@ const [snackSeverity, setSnackSeverity] =
     // CÁLCULOS
     //////////////////////////////////////////////////////
 
-    const subtotal =
-      Number(form.superficie || 0) *
-      (selectedCategory?.pricePerM2 || 0) *
-      (selectedCategory?.coefficient || 0);
+    const coefficient =
+  selectedCategory?.coefficient || 0;
 
-    const surchargeValue =
-      form.hasSurcharge === "true"
-        ? (subtotal *
-            Number(form.surchargePercent || 0)) /
-          100
-        : 0;
+const price =
+  selectedCategory?.pricePerM2 || 0;
 
-    const totalFinal =
-      subtotal + surchargeValue;
+  //subtotal: esta variable calcula el valor del subtotal de la liquidación, multiplicando la superficie, el coeficiente y el precio por m².
+const subtotal =
+  Number(form.superficie || 0) *
+  coefficient *
+  price;
 
+  //surchargeBaseArea: esta variable calcula la superficie afectada por el recargo, si se ingresó una superficie afectada por el recargo, se utiliza esa superficie, de lo contrario, se utiliza la superficie total.
+const surchargeBaseArea =
+  Number(form.surchargeArea || 0) > 0
+    ? Number(form.surchargeArea)
+    : Number(form.superficie);
+
+    //surchargeSubtotal: esta variable calcula el valor del recargo sobre la superficie afectada por el recargo, multiplicando la superficie afectada por el recargo, el coeficiente y el precio por m².
+const surchargeSubtotal =
+  surchargeBaseArea *
+  coefficient *
+  price;
+
+//surcharge: esta variable calcula el valor del recargo según si tiene recargo o no, y si tiene recargo, calcula el valor del recargo según el porcentaje ingresado. Si no tiene recargo, el valor es 0.
+const surchargeValue =
+  form.hasSurcharge === "true"
+    ? surchargeSubtotal *
+      (Number(form.surchargePercent || 0) / 100)
+    : 0;
+
+const totalFinal =
+  subtotal + surchargeValue;
     //////////////////////////////////////////////////////
     // SUBMIT
     //////////////////////////////////////////////////////
@@ -287,14 +309,24 @@ const [snackSeverity, setSnackSeverity] =
           createdById: Number(user.id),
 
           hasSurcharge:
-            form.hasSurcharge === "true",
+  form.hasSurcharge === "true",
 
-          surchargePercent:
-            form.hasSurcharge === "true"
-              ? Number(
-                  form.surchargePercent
-                )
-              : null,
+isFullSurcharge:
+  form.hasSurcharge === "true"
+    ? isFullSurcharge
+    : null,
+
+surchargePercent:
+  form.hasSurcharge === "true"
+    ? Number(form.surchargePercent)
+    : null,
+
+surchargeSurface:
+  form.hasSurcharge === "true"
+    ? Number(
+        form.surchargeArea || form.superficie
+      )
+    : null,
 
           observations: form.observations,
 
@@ -748,25 +780,63 @@ const [snackSeverity, setSnackSeverity] =
                     </MenuItem>
                   </TextField>
                 </Grid>
+{form.hasSurcharge === "true" && (
+  <>
+    <Grid size={6}>
+      <TextField
+        size="small"
+        label="Recargo (%)"
+        name="surchargePercent"
+        value={form.surchargePercent}
+        fullWidth
+        onChange={handleChange}
+      />
+    </Grid>
 
-                {form.hasSurcharge ===
-                  "true" && (
-                  <Grid size={6}>
-                    <TextField
-                      size="small"
-                      label="Recargo (%)"
-                      name="surchargePercent"
-                      value={
-                        form.surchargePercent
-                      }
-                      fullWidth
-                      onChange={
-                        handleChange
-                      }
-                    />
-                  </Grid>
-                )}
+    <Grid size={6}>
+      <TextField
+        select
+        size="small"
+        label="¿El recargo aplica sobre toda la superficie?"
+        value={isFullSurcharge ? "SI" : "NO"}
+        onChange={(e) => {
+          const full = e.target.value === "SI";
 
+          setIsFullSurcharge(full);
+
+          if (full) {
+            setForm((prev) => ({
+              ...prev,
+              surchargeArea: prev.superficie,
+            }));
+          } else {
+            setForm((prev) => ({
+              ...prev,
+              surchargeArea: "",
+            }));
+          }
+        }}
+        fullWidth
+      >
+        <MenuItem value="SI">Sí</MenuItem>
+        <MenuItem value="NO">No</MenuItem>
+      </TextField>
+    </Grid>
+
+    {!isFullSurcharge && (
+      <Grid size={6}>
+        <TextField
+          size="small"
+          label="Superficie con recargo (m²)"
+          name="surchargeArea"
+          value={form.surchargeArea}
+          fullWidth
+          onChange={handleChange}
+        />
+      </Grid>
+    )}
+  </>
+)}
                 <Grid size={12}>
                   <TextField
                     size="small"
@@ -1056,7 +1126,6 @@ const [snackSeverity, setSnackSeverity] =
     <Box
       sx={{
         borderBottom: "1px solid #ddd",
-        pb: 1,
       }}
     >
       <Typography
@@ -1190,7 +1259,7 @@ const [snackSeverity, setSnackSeverity] =
   {/* FILA */}
 
   <Grid size={4}>
-    <Box sx={{ borderBottom: "1px solid #ddd", pb: 1 }}>
+    <Box sx={{ borderBottom: "1px solid #ddd", pb: 3.8 }}>
       <Typography
         sx={{
           fontWeight: 700,
@@ -1210,7 +1279,7 @@ const [snackSeverity, setSnackSeverity] =
   </Grid>
 
   <Grid size={4}>
-    <Box sx={{ borderBottom: "1px solid #ddd", pb: 1 }}>
+    <Box sx={{ borderBottom: "1px solid #ddd", pb: 3.8 }}>
       <Typography
         sx={{
           fontWeight: 700,
@@ -1229,27 +1298,39 @@ const [snackSeverity, setSnackSeverity] =
     </Box>
   </Grid>
 
-  <Grid size={4}>
-    <Box sx={{ borderBottom: "1px solid #ddd", pb: 1 }}>
-      <Typography
-        sx={{
-          fontWeight: 700,
-          fontSize: "12px",
-          textTransform: "uppercase",
-          color: "#666",
-          mb: 0.5,
-        }}
-      >
-        Recargo
-      </Typography>
+<Grid size={4}>
+  <Box sx={{ borderBottom: "1px solid #ddd", pb: 1 }}>
+    <Typography
+      sx={{
+        fontWeight: 700,
+        fontSize: "12px",
+        textTransform: "uppercase",
+        color: "#666",
+        mb: 0.5,
+      }}
+    >
+      Recargo
+    </Typography>
 
-      <Typography sx={{ fontSize: "16px" }}>
-        {savedLiquidation?.hasSurcharge
-          ? `Sí (${savedLiquidation?.surchargePercent}%)`
-          : "No"}
-      </Typography>
-    </Box>
-  </Grid>
+    <Typography sx={{ fontSize: "16px" }}>
+      {savedLiquidation?.hasSurcharge
+        ? `(${savedLiquidation.surchargePercent}%)`
+        : "No"}
+    </Typography>
+
+  {savedLiquidation?.hasSurcharge && (
+  <>
+    
+
+    <Typography sx={{ fontSize: "14px", color: "#666" }}>
+      {savedLiquidation.isFullSurcharge
+        ? "Aplicado sobre toda la superficie"
+        : `Aplicado sobre ${savedLiquidation.surchargeSurface} m²`}
+    </Typography>
+  </>
+)}
+  </Box>
+</Grid>
 
   {/* OBSERVACIONES */}
 
@@ -1309,6 +1390,7 @@ const [snackSeverity, setSnackSeverity] =
                   <Typography  sx={{fontWeight: 700}}>
                     {
                       selectedCategory?.coefficient
+                    } 
                     } 
                   </Typography>
                 </Grid>
@@ -1379,26 +1461,23 @@ const [snackSeverity, setSnackSeverity] =
 
               {/* AVISO */}
 
-            <Box
-  sx={{
-    mt: 4,
-    pt: 2,
-    marginTop: "-50px",
-    borderTop: "1px dashed #999",
-    textAlign: "center",
-
-    pageBreakInside: "avoid",
-    breakInside: "avoid",
-    pageBreakBefore: "auto",
-  }}
->
-  <Typography
-    variant="caption"
-    color="text.secondary"
-  >
-    No válido como comprobante de pago
-  </Typography>
-</Box>
+              <Box
+                sx={{
+                  mt: 3,
+                  pt: 2,
+                  borderTop:
+                    "1px dashed #999",
+                  textAlign: "center",
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                >
+                  No válido como comprobante de
+                  pago
+                </Typography>
+              </Box>
             </Box>
 
             <Stack

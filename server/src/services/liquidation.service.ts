@@ -54,22 +54,53 @@ export const createLiquidationService = async (
     );
   }
 
-  if (
-    data.hasSurcharge &&
-    !data.surchargePercent
-  ) {
+//////////////////////////////////////////////////////
+// VALIDACIONES DE RECARGO
+//////////////////////////////////////////////////////
+
+if (data.hasSurcharge) {
+
+  if (!data.surchargePercent) {
     throw new Error(
       "Debe ingresar el porcentaje de recargo"
     );
   }
 
+  if (data.isFullSurcharge === undefined) {
+    throw new Error(
+      "Debe indicar si el recargo aplica a toda la superficie."
+    );
+  }
+
+  if (
+    !data.isFullSurcharge &&
+    (
+      data.surchargeSurface === undefined ||
+      data.surchargeSurface <= 0
+    )
+  ) {
+    throw new Error(
+      "Debe ingresar la superficie afectada por el recargo."
+    );
+  }
+
+  if (
+    !data.isFullSurcharge &&
+    data.surchargeSurface! > data.superficie
+  ) {
+    throw new Error(
+      "La superficie con recargo no puede superar la superficie total."
+    );
+  }
+
+}
   //////////////////////////////////////////////////////
   // CREAR LIQUIDACIÓN
   //////////////////////////////////////////////////////
 
   const createdLiquidation =
     await createLiquidationRepo(data);
-
+console.log("createdLiquidation", data);
   //////////////////////////////////////////////////////
   // AUDITORÍA
   //////////////////////////////////////////////////////

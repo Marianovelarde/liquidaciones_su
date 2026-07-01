@@ -238,7 +238,7 @@ export default function AdminMetrics() {
 
 
       <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 3 }}>
+        <Grid size={{ xs: 12, md: 2 }}>
           <MetricCard
             title="Total m² registrados"
             value={totalM2}
@@ -246,7 +246,7 @@ export default function AdminMetrics() {
           />
         </Grid>
 
-         <Grid size={{ xs: 12, md: 3 }}>
+         <Grid size={{ xs: 12, md: 4 }}>
           <MetricCard
             title="Monto total"
             value={`$ ${totalAmount}`}
