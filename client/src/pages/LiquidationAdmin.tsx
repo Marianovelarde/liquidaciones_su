@@ -294,9 +294,6 @@ export default function LiquidationAdmin() {
         </CardContent>
       </Card>
 
-      //////////////////////////////////////////////////////
-      // MODAL DELETE
-      //////////////////////////////////////////////////////
 
       <Dialog
         open={openDelete}

@@ -63,6 +63,7 @@
       parcela: "",
 
       propietario: "",
+      cuil: "",
       ubicacion: "",
       tipoObra: "",
       concepto: "",
@@ -218,14 +219,14 @@ const subtotal =
   price;
 
   //surchargeBaseArea: esta variable calcula la superficie afectada por el recargo, si se ingresó una superficie afectada por el recargo, se utiliza esa superficie, de lo contrario, se utiliza la superficie total.
-const surchargeBaseArea =
+const surchargeSurface  =
   Number(form.surchargeArea || 0) > 0
     ? Number(form.surchargeArea)
     : Number(form.superficie);
 
     //surchargeSubtotal: esta variable calcula el valor del recargo sobre la superficie afectada por el recargo, multiplicando la superficie afectada por el recargo, el coeficiente y el precio por m².
 const surchargeSubtotal =
-  surchargeBaseArea *
+  surchargeSurface  *
   coefficient *
   price;
 
@@ -291,6 +292,8 @@ const totalFinal =
           parcela: String(form.parcela),
 
           propietario: form.propietario,
+          
+          cuil: form.cuil,
 
           ubicacion: form.ubicacion,
 
@@ -504,6 +507,17 @@ surchargeSurface:
                     name="propietario"
                     fullWidth
                     value={form.propietario}
+                    onChange={handleChange}
+                  />
+
+                </Grid>
+                   <Grid size={3}>
+                  <TextField
+                    size="small"
+                    label="Cuil"
+                    name="cuil"
+                    fullWidth
+                    value={form.cuil}
                     onChange={handleChange}
                   />
                 </Grid>
@@ -1120,6 +1134,37 @@ surchargeSurface:
     </Box>
   </Grid>
 
+  <Grid size={12}>
+  <Box
+    sx={{
+      borderBottom: "1px solid #ddd",
+      pb: 1,
+    }}
+  >
+    <Typography
+      sx={{
+        fontWeight: 700,
+        fontSize: "12px",
+        textTransform: "uppercase",
+        color: "#666",
+        mb: 0.5,
+        letterSpacing: 1,
+      }}
+    >
+      CUIL
+    </Typography>
+
+    <Typography
+      sx={{
+        fontSize: "16px",
+        fontWeight: 500,
+      }}
+    >
+      {savedLiquidation?.cuil}
+    </Typography>
+  </Box>
+</Grid>
+
   {/* UBICACION */}
 
   <Grid size={12}>
@@ -1152,67 +1197,71 @@ surchargeSurface:
     </Box>
   </Grid>
 
-  {/* FILA */}
+ <Grid size={12}>
+  <Box
+    sx={{
+      borderBottom: "1px solid #ddd",
+      pb: 1,
+    }}
+  >
+    <Typography
+      sx={{
+        fontWeight: 700,
+        fontSize: "12px",
+        textTransform: "uppercase",
+        color: "#666",
+        mb: 0.5,
+        letterSpacing: 1,
+      }}
+    >
+      Expediente
+    </Typography>
 
-  <Grid size={4}>
-    <Box sx={{ borderBottom: "1px solid #ddd", pb: 1 }}>
-      <Typography
-        sx={{
-          fontWeight: 700,
-          fontSize: "12px",
-          textTransform: "uppercase",
-          color: "#666",
-          mb: 0.5,
-        }}
-      >
-        Expediente
-      </Typography>
+    <Typography
+      sx={{
+        fontSize: "16px",
+        fontWeight: 500,
+      }}
+    >
+      {savedLiquidation?.expedienteNumero} - {savedLiquidation?.expedienteCodigo} - {savedLiquidation?.expedienteAnio}
+    </Typography>
+  </Box>
+</Grid>
 
-      <Typography sx={{ fontSize: "16px" }}>
-        {savedLiquidation?.expedienteNumero}
-      </Typography>
-    </Box>
-  </Grid>
+{/* CARPETA */}
 
-  <Grid size={4}>
-    <Box sx={{ borderBottom: "1px solid #ddd", pb: 1 }}>
-      <Typography
-        sx={{
-          fontWeight: 700,
-          fontSize: "12px",
-          textTransform: "uppercase",
-          color: "#666",
-          mb: 0.5,
-        }}
-      >
-        Código
-      </Typography>
+<Grid size={12}>
+  <Box
+    sx={{
+      borderBottom: "1px solid #ddd",
+      pb: 1,
+    }}
+  >
+    <Typography
+      sx={{
+        fontWeight: 700,
+        fontSize: "12px",
+        textTransform: "uppercase",
+        color: "#666",
+        mb: 0.5,
+        letterSpacing: 1,
+      }}
+    >
+      Carpeta
+    </Typography>
 
-      <Typography sx={{ fontSize: "16px" }}>
-        {savedLiquidation?.expedienteCodigo}
-      </Typography>
-    </Box>
-  </Grid>
+    <Typography
+      sx={{
+        fontSize: "16px",
+        fontWeight: 500,
+      }}
+    >
+      {savedLiquidation?.carpetaNumero} - {savedLiquidation?.carpetaLetra} - 
+      {savedLiquidation?.carpetaAnio}
+    </Typography>
+  </Box>
+</Grid>
 
-  <Grid size={4}>
-    <Box sx={{ borderBottom: "1px solid #ddd", pb: 1 }}>
-      <Typography
-        sx={{
-          fontWeight: 700,
-          fontSize: "12px",
-          textTransform: "uppercase",
-          color: "#666",
-          mb: 0.5,
-        }}
-      >
-        Año
-      </Typography>
-
-      <Typography sx={{ fontSize: "16px" }}>
-        {savedLiquidation?.expedienteAnio}
-      </Typography>
-    </Box>
-  </Grid>
 
   {/* FILA */}
 
@@ -1391,7 +1440,7 @@ surchargeSurface:
                     {
                       selectedCategory?.coefficient
                     } 
-                    } 
+                    
                   </Typography>
                 </Grid>
 

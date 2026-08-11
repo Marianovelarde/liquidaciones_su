@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { getCategories } from "../api/category.api";
+import LiquidationPrint from "./LiquidationPrint";
 import {
   getLiquidationById,
   updateLiquidation,
@@ -34,6 +35,8 @@ const statusOptions = [
 ];
 
 export default function LiquidationDetailPage() {
+
+
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -45,6 +48,11 @@ export default function LiquidationDetailPage() {
   const user = auth?.user || {};
 
   const isAdmin = user?.role === "ADMIN";
+
+  const canEditLiquidation =
+  user?.role === "ADMIN" ||
+  user?.role === "GENERADOR";
+
 
   const canChangeStatus =
     user?.role === "ADMIN" ||
@@ -65,6 +73,13 @@ export default function LiquidationDetailPage() {
   //////////////////////////////////////////////////////
 
   const [form, setForm] = useState<any>(null);
+
+  const [categories, setCategories] = useState<any[]>([]);
+
+  const [openPrint, setOpenPrint] = useState(false);
+  
+const [selectedCategory, setSelectedCategory] =
+  useState<any>(null);
 
   const [openStatusModal, setOpenStatusModal] =
     useState(false);
@@ -92,11 +107,19 @@ export default function LiquidationDetailPage() {
 
   const loadLiquidation = async () => {
     try {
-      const res = await getLiquidationById(
-        Number(id)
-      );
+    const res = await getLiquidationById(Number(id));
 
-      setForm(res.data);
+setForm(res.data);
+
+const categoriesResponse = await getCategories();
+
+setCategories(categoriesResponse.data);
+
+const category = categoriesResponse.data.find(
+  (c: any) => c.id === res.data.categoryId
+);
+
+setSelectedCategory(category || null);
 
 setOriginalReceiptNumber(
   res.data.receiptNumber || ""
@@ -106,9 +129,14 @@ setOriginalReceiptNumber(
     }
   };
 
-  useEffect(() => {
-    loadLiquidation();
-  }, []);
+useEffect(() => {
+  loadLiquidation();
+
+  getCategories().then((res) => {
+    setCategories(res.data);
+  });
+
+}, []);
 
   //////////////////////////////////////////////////////
   // HANDLE CHANGE
@@ -221,6 +249,33 @@ setOriginalReceiptNumber(
   // RENDER
   //////////////////////////////////////////////////////
 
+
+  const subtotal =
+  (form.superficie || 0) *
+  (selectedCategory?.coefficient || 0) *
+  (selectedCategory?.pricePerM2 || 0);
+
+  const surchargeBase =
+  form.isFullSurcharge
+    ? form.superficie
+    : form.surchargeSurface || 0;
+
+    const surchargeSubtotal =
+  surchargeBase *
+  (selectedCategory?.coefficient || 0) *
+  (selectedCategory?.pricePerM2 || 0);
+
+
+  const surchargeValue =
+  form.hasSurcharge
+    ? surchargeSubtotal *
+      ((form.surchargePercent || 0) / 100)
+    : 0;
+
+    const totalFinal =
+  subtotal + surchargeValue;
+
+
   return (
     <Box>
       <Typography
@@ -266,7 +321,7 @@ setOriginalReceiptNumber(
                 value={
                   form.emissionNumber || ""
                 }
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="emissionNumber"
                 onChange={handleChange}
               />
@@ -277,8 +332,19 @@ setOriginalReceiptNumber(
                 label="Propietario"
                 fullWidth
                 value={form.propietario || ""}
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="propietario"
+                onChange={handleChange}
+              />
+            </Grid>
+
+             <Grid size={{ xs: 12, md: 4 }}>
+              <TextField
+                label="cuil"
+                fullWidth
+                value={form.cuil || ""}
+                disabled={!canEditLiquidation}
+                name="cuil"
                 onChange={handleChange}
               />
             </Grid>
@@ -288,7 +354,7 @@ setOriginalReceiptNumber(
                 label="Concepto"
                 fullWidth
                 value={form.concepto || ""}
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="concepto"
                 onChange={handleChange}
               />
@@ -314,7 +380,7 @@ setOriginalReceiptNumber(
                 value={
                   form.expedienteNumero || ""
                 }
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="expedienteNumero"
                 onChange={handleChange}
               />
@@ -327,7 +393,7 @@ setOriginalReceiptNumber(
                 value={
                   form.expedienteCodigo || ""
                 }
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="expedienteCodigo"
                 onChange={handleChange}
               />
@@ -340,7 +406,7 @@ setOriginalReceiptNumber(
                 value={
                   form.expedienteAnio || ""
                 }
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="expedienteAnio"
                 onChange={handleChange}
               />
@@ -366,7 +432,7 @@ setOriginalReceiptNumber(
                 value={
                   form.carpetaNumero || ""
                 }
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="carpetaNumero"
                 onChange={handleChange}
               />
@@ -379,7 +445,7 @@ setOriginalReceiptNumber(
                 value={
                   form.carpetaLetra || ""
                 }
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="carpetaLetra"
                 onChange={handleChange}
               />
@@ -392,7 +458,7 @@ setOriginalReceiptNumber(
                 value={
                   form.carpetaAnio || ""
                 }
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="carpetaAnio"
                 onChange={handleChange}
               />
@@ -416,7 +482,7 @@ setOriginalReceiptNumber(
                 label="Distrito"
                 fullWidth
                 value={form.distrito || ""}
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="distrito"
                 onChange={handleChange}
               />
@@ -427,7 +493,7 @@ setOriginalReceiptNumber(
                 label="Zona"
                 fullWidth
                 value={form.zona || ""}
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="zona"
                 onChange={handleChange}
               />
@@ -438,7 +504,7 @@ setOriginalReceiptNumber(
                 label="Manzana"
                 fullWidth
                 value={form.manzana || ""}
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="manzana"
                 onChange={handleChange}
               />
@@ -449,7 +515,7 @@ setOriginalReceiptNumber(
                 label="Parcela"
                 fullWidth
                 value={form.parcela || ""}
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="parcela"
                 onChange={handleChange}
               />
@@ -473,7 +539,7 @@ setOriginalReceiptNumber(
                 label="Ubicación"
                 fullWidth
                 value={form.ubicacion || ""}
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="ubicacion"
                 onChange={handleChange}
               />
@@ -484,7 +550,7 @@ setOriginalReceiptNumber(
                 label="Tipo de Obra"
                 fullWidth
                 value={form.tipoObra || ""}
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="tipoObra"
                 onChange={handleChange}
               />
@@ -495,18 +561,134 @@ setOriginalReceiptNumber(
                 label="Superficie"
                 fullWidth
                 value={form.superficie || ""}
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="superficie"
                 onChange={handleChange}
               />
             </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+  <TextField
+    select
+    label="Categoría"
+    fullWidth
+    name="categoryId"
+    value={form.categoryId || ""}
+    disabled={!canEditLiquidation}
+    onChange={(e) => {
+      const value = Number(e.target.value);
+
+      setForm((prev: any) => ({
+        ...prev,
+        categoryId: value,
+      }));
+
+      const cat = categories.find(
+        (c: any) => c.id === value
+      );
+
+      setSelectedCategory(cat || null);
+    }}
+  >
+    {categories.map((cat: any) => (
+      <MenuItem key={cat.id} value={cat.id}>
+        {cat.name} | Coef. {cat.coefficient}
+      </MenuItem>
+    ))}
+  </TextField>
+</Grid>
+   <Grid size={{ xs: 12, md: 4 }}>
+  <TextField
+    select
+    label="¿Tiene recargo?"
+    fullWidth
+    name="hasSurcharge"
+    value={form.hasSurcharge ? "SI" : "NO"}
+    disabled={!canEditLiquidation}
+    onChange={(e) => {
+      const hasSurcharge = e.target.value === "SI";
+
+      setForm((prev: any) => ({
+        ...prev,
+        hasSurcharge,
+
+        // Limpiar los datos si deja de tener recargo
+        surchargePercent: hasSurcharge
+          ? prev.surchargePercent
+          : "",
+
+        isFullSurcharge: hasSurcharge
+          ? prev.isFullSurcharge
+          : false,
+
+        surchargeSurface: hasSurcharge
+          ? prev.surchargeSurface
+          : "",
+      }));
+    }}
+  >
+    <MenuItem value="NO">No</MenuItem>
+    <MenuItem value="SI">Sí</MenuItem>
+  </TextField>
+</Grid>
+
+{form.hasSurcharge && (
+  <>
+    <Grid size={{ xs: 12, md: 4 }}>
+      <TextField
+        label="Recargo (%)"
+        fullWidth
+        name="surchargePercent"
+        value={form.surchargePercent ?? ""}
+        disabled={!canEditLiquidation}
+        onChange={handleChange}
+      />
+    </Grid>
+
+    <Grid size={{ xs: 12, md: 4 }}>
+      <TextField
+        select
+        label="¿El recargo aplica sobre toda la superficie?"
+        fullWidth
+        value={form.isFullSurcharge ? "SI" : "NO"}
+        disabled={!canEditLiquidation}
+        onChange={(e) => {
+          const full = e.target.value === "SI";
+
+          setForm((prev: any) => ({
+            ...prev,
+            isFullSurcharge: full,
+            surchargeSurface: full
+              ? prev.superficie
+              : prev.surchargeSurface ?? "",
+          }));
+        }}
+      >
+        <MenuItem value="SI">Sí</MenuItem>
+        <MenuItem value="NO">No</MenuItem>
+      </TextField>
+    </Grid>
+
+    {!form.isFullSurcharge && (
+      <Grid size={{ xs: 12, md: 4 }}>
+        <TextField
+          label="Superficie con recargo (m²)"
+          name="surchargeSurface"
+          fullWidth
+          value={form.surchargeSurface ?? ""}
+          disabled={!canEditLiquidation}
+          onChange={handleChange}
+        />
+      </Grid>
+    )}
+  </>
+)}
 
             <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 label="Total"
                 fullWidth
                 value={form.total || ""}
-                disabled={!isAdmin}
+                disabled={!canEditLiquidation}
                 name="total"
                 onChange={handleChange}
               />
@@ -551,7 +733,7 @@ setOriginalReceiptNumber(
   fullWidth
   value={form.receiptNumber || ""}
   disabled={
-    !isAdmin &&
+    !canEditLiquidation &&
     !!originalReceiptNumber
   }
   name="receiptNumber"
@@ -571,7 +753,7 @@ setOriginalReceiptNumber(
                 value={
                   form.observations || ""
                 }
-               disabled={!isAdmin}
+               disabled={!canEditLiquidation}
                 name="observations"
                 onChange={handleChange}
               />
@@ -587,7 +769,7 @@ setOriginalReceiptNumber(
                   mt: 3,
                 }}
               >
-                {(isAdmin ||
+                {(canEditLiquidation ||
                   canEditPaymentData) && (
                   <Button
                     variant="contained"
@@ -710,7 +892,24 @@ setOriginalReceiptNumber(
             Confirmar cambio
           </Button>
         </DialogActions>
+  
       </Dialog>
+            <Button
+  variant="outlined"
+  onClick={() => setOpenPrint(true)}
+>
+  Imprimir
+</Button>
+
+<LiquidationPrint
+  open={openPrint}
+  onClose={() => setOpenPrint(false)}
+  liquidation={form}
+  category={selectedCategory}
+  subtotal={subtotal}
+  surchargeValue={surchargeValue}
+  totalFinal={totalFinal}
+/>
     </Box>
   );
 }

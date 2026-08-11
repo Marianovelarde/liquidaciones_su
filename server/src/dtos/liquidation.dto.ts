@@ -24,6 +24,7 @@ export interface CreateLiquidationDTO {
 
   // datos generales
   propietario: string;
+  cuil: string;
   ubicacion: string;
   tipoObra: string;
   concepto: string;
@@ -75,6 +76,7 @@ export interface UpdateLiquidationDTO {
   parcela?: string;
 
   propietario?: string;
+  cuil?: string;
   ubicacion?: string;
   tipoObra?: string;
   concepto?: string;
@@ -85,6 +87,8 @@ export interface UpdateLiquidationDTO {
 
   hasSurcharge?: boolean;
   surchargePercent?: number;
+  isFullSurcharge?: boolean;
+  surchargeSurface?: number;
 
   observations?: string;
 

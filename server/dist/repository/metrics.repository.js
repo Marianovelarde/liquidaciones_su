@@ -7,15 +7,25 @@ exports.getSystemMetricsRepo = void 0;
 const client_1 = __importDefault(require("../prisma/client"));
 const getSystemMetricsRepo = async () => {
     //////////////////////////////////////////////////////
+    // FILTRO BASE
+    //////////////////////////////////////////////////////
+    const activeWhere = {
+        deletedAt: null,
+    };
+    //////////////////////////////////////////////////////
     // MÉTRICAS PRINCIPALES
     //////////////////////////////////////////////////////
-    const totalLiquidations = await client_1.default.liquidation.count();
+    const totalLiquidations = await client_1.default.liquidation.count({
+        where: activeWhere,
+    });
     const totalM2 = await client_1.default.liquidation.aggregate({
+        where: activeWhere,
         _sum: {
             superficie: true,
         },
     });
     const totalAmount = await client_1.default.liquidation.aggregate({
+        where: activeWhere,
         _sum: {
             total: true,
         },
@@ -25,11 +35,13 @@ const getSystemMetricsRepo = async () => {
     //////////////////////////////////////////////////////
     const paidLiquidations = await client_1.default.liquidation.count({
         where: {
+            deletedAt: null,
             status: "PAGADO",
         },
     });
     const paidAmount = await client_1.default.liquidation.aggregate({
         where: {
+            deletedAt: null,
             status: "PAGADO",
         },
         _sum: {
@@ -41,6 +53,7 @@ const getSystemMetricsRepo = async () => {
     //////////////////////////////////////////////////////
     const pendingLiquidations = await client_1.default.liquidation.count({
         where: {
+            deletedAt: null,
             status: "PENDIENTE_DE_PAGO",
         },
     });
@@ -48,14 +61,16 @@ const getSystemMetricsRepo = async () => {
     // PROMEDIO
     //////////////////////////////////////////////////////
     const averageAmount = await client_1.default.liquidation.aggregate({
+        where: activeWhere,
         _avg: {
             total: true,
         },
     });
     //////////////////////////////////////////////////////
-    // ÚLTIMA LIQUIDACIÓN
+    // ÚLTIMA LIQUIDACIÓN ACTIVA
     //////////////////////////////////////////////////////
     const lastLiquidation = await client_1.default.liquidation.findFirst({
+        where: activeWhere,
         orderBy: {
             createdAt: "desc",
         },

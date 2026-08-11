@@ -316,7 +316,7 @@ export default function AdminMetrics() {
             sx={{fontWeight: 700}}
             gutterBottom
           >
-            Resumen Ejecutivo
+            Resumen de Liquidacion
           </Typography>
 
           <Divider sx={{ mb: 3 }} />

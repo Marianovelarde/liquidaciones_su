@@ -1,5 +1,5 @@
 // src/services/liquidation.services.ts
-
+import prisma from "../prisma/client";
 import {
   createLiquidationRepo,
   getAllLiquidationsRepo,
@@ -41,6 +41,9 @@ export const createLiquidationService = async (
   if (!data.propietario) {
     throw new Error("El propietario es obligatorio");
   }
+  if (!data.cuil) {
+  throw new Error("El CUIL es obligatorio");
+}
 
   if (!data.categoryId) {
     throw new Error(
@@ -60,7 +63,7 @@ export const createLiquidationService = async (
 
 if (data.hasSurcharge) {
 
-  if (!data.surchargePercent) {
+ if (data.surchargePercent == null) {
     throw new Error(
       "Debe ingresar el porcentaje de recargo"
     );
@@ -178,6 +181,81 @@ export const updateLiquidationService =
     //////////////////////////////////////////////////////
     // UPDATE
     //////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////
+// OBTENER CATEGORÍA
+//////////////////////////////////////////////////////
+
+const category = await prisma.category.findUnique({
+  where: {
+    id:
+      data.categoryId ??
+      oldLiquidation.categoryId,
+  },
+});
+
+
+if (!category) {
+  throw new Error("Categoría no encontrada");
+}
+
+//////////////////////////////////////////////////////
+// RECALCULAR TOTAL
+//////////////////////////////////////////////////////
+
+const superficie =
+  Number(data.superficie ?? oldLiquidation.superficie);
+
+const subtotal =
+  superficie *
+  category.coefficient *
+  category.pricePerM2;
+
+let surchargeValue = 0;
+
+const hasSurcharge =
+  data.hasSurcharge ?? oldLiquidation.hasSurcharge;
+
+if (hasSurcharge) {
+
+
+  
+  const surchargePercent =
+    Number(
+      data.surchargePercent ??
+      oldLiquidation.surchargePercent
+    );
+
+  const isFullSurcharge =
+    data.isFullSurcharge ??
+    oldLiquidation.isFullSurcharge;
+
+  const surchargeSurface = isFullSurcharge
+    ? superficie
+    : Number(
+        data.surchargeSurface ??
+        oldLiquidation.surchargeSurface
+      );
+
+  const surchargeSubtotal =
+    surchargeSurface *
+    category.coefficient *
+    category.pricePerM2;
+
+  surchargeValue =
+    surchargeSubtotal *
+    surchargePercent /
+    100;
+
+data.isFullSurcharge = isFullSurcharge ?? false;data.surchargeSurface = surchargeSurface;
+data.surchargePercent = surchargePercent;
+}
+
+const total =
+  subtotal + surchargeValue;
+
+// Lo enviamos al repository
+data.total = total;
 
     const updatedLiquidation =
       await updateLiquidationRepo(id, data);
